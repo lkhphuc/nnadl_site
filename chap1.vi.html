@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- Produced from a LaTeX source file.  Note that the production is done -->
+<!-- by a very rough-and-ready (and buggy) script, so the HTML and other  -->
+<!-- code is quite ugly!  Later versions should be better.                -->
+<head>
+  <meta charset="utf-8">
+  <meta name="citation_title" content="Neural Networks and Deep Learning">
+  <meta name="citation_author" content="Nielsen, Michael A.">
+  <meta name="citation_publication_date" content="2015">
+  <meta name="citation_fulltext_html_url" content="http://neuralnetworksanddeeplearning.com">
+  <meta name="citation_publisher" content="Determination Press">
+  <meta name="citation_fulltext_world_readable" content="">
+  <link rel="icon" href="nnadl_favicon.ICO" />
+  <title>Neural networks and deep learning</title>
+  <script src="assets/jquery.min.js"></script> 
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$']]},
+      "HTML-CSS": 
+      {scale: 92},
+      TeX: { equationNumbers: { autoNumber: "AMS" }}
+    });
+  </script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+  </script>
+  
+  <link href="assets/style.css" rel="stylesheet">
+  <link href="assets/pygments.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.2/themes/smoothness/jquery-ui.css">
+  
+  <style>
+    /* Adapted from */
+    /* https://groups.google.com/d/msg/mathjax-users/jqQxrmeG48o/oAaivLgLN90J, */
+    /* by David Cervone */
+    
+    @font-face {
+      font-family: 'MJX_Math';
+      src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/eot/MathJax_Math-Italic.eot'); /* IE9 Compat Modes */
+      src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/eot/MathJax_Math-Italic.eot?iefix') format('eot'),
+      url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/woff/MathJax_Math-Italic.woff')  format('woff'),
+      url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/otf/MathJax_Math-Italic.otf')  format('opentype'),
+      url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/svg/MathJax_Math-Italic.svg#MathJax_Math-Italic') format('svg');
+    }
+    
+    @font-face {
+      font-family: 'MJX_Main';
+      src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/eot/MathJax_Main-Regular.eot'); /* IE9 Compat Modes */
+      src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/eot/MathJax_Main-Regular.eot?iefix') format('eot'),
+      url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/woff/MathJax_Main-Regular.woff')  format('woff'),
+      url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/otf/MathJax_Main-Regular.otf')  format('opentype'),
+      url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/fonts/HTML-CSS/TeX/svg/MathJax_Main-Regular.svg#MathJax_Main-Regular') format('svg');
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header"> 
+    <h1 class="chapter_number"><a href="">CHƯƠNG 1</a></h1>
+    <h1 class="chapter_title"><a href="">Sử dụng mạng nơ-ron để nhận diện kí tự viết tay.</a></h1>
+  </div>
+  <div class="section">
+    <div id="toc"> 
+      <p class="toc_title"><a href="index.html">Mạng Nơ-ron và Học sâu</a></p>
+      <p class="toc_not_mainchapter"><a href="about.html">Cuốn sách này viết về cái gì </a></p>
+      <p class="toc_not_mainchapter"><a href="exercises_and_problems.html">Về những câu hỏi và bài tập</a></p>
+      <p class='toc_mainchapter'>
+        <a id="toc_using_neural_nets_to_recognize_handwritten_digits_reveal" class="toc_reveal" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';"><img id="toc_img_using_neural_nets_to_recognize_handwritten_digits" src="images/arrow.png" width="15px"></a>
+        <a href="chap1.html">Sử dụng mạng nơ-ron để nhận diện kí tự viết tay.</a>
+        <div id="toc_using_neural_nets_to_recognize_handwritten_digits" style="display: none;"> 
+          <p class="toc_section">
+            <ul>
+              <a href="chap1.html#perceptrons"><li>Perceptrons</li></a><a href="chap1.html#sigmoid_neurons"><li>Sigmoid neurons</li></a> 
+              <a href="chap1.html#the_architecture_of_neural_networks"><li>Kiến trúc của mạng nơ-ron</li></a>
+              <a href="chap1.html#a_simple_network_to_classify_handwritten_digits"> <li>Một mạng nơ-ron đơn giản để phân loại chữ số viết tay</li> </a> 
+              <a href="chap1.html#learning_with_gradient_descent"><li>Học thông qua Gradient descent</li></a>
+              <a href="chap1.html#implementing_our_network_to_classify_digits"> <li>Hoàn thành mạng nơ-ron của chúng ta để phân loại chữ số</li> </a> 
+              <a href="chap1.html#toward_deep_learning"><li>Về học sâu</li> </a> 
+            </ul> 
+          </p> 
+        </div>
+        <script>
+          $('#toc_using_neural_nets_to_recognize_handwritten_digits_reveal').click(function() { 
+            var src = $('#toc_img_using_neural_nets_to_recognize_handwritten_digits').attr('src');
+            if(src == 'images/arrow.png') {
+              $("#toc_img_using_neural_nets_to_recognize_handwritten_digits").attr('src', 'images/arrow_down.png');
+            } else {
+              $("#toc_img_using_neural_nets_to_recognize_handwritten_digits").attr('src', 'images/arrow.png');
+            };
+            $('#toc_using_neural_nets_to_recognize_handwritten_digits').toggle('fast', function() {});  
+          });
+        </script>
+      </p>
+      <p class='toc_mainchapter'>
+        <a id="toc_how_the_backpropagation_algorithm_works_reveal" class="toc_reveal" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';"><img id="toc_img_how_the_backpropagation_algorithm_works" src="images/arrow.png" width="15px"></a>
+        <a href="chap2.html">Thuật toán truyền ngược hoạt động như thế nào</a>
+        <div id="toc_how_the_backpropagation_algorithm_works" style="display: none;">
+          <p class="toc_section"><ul>
+            <a href="chap2.html#warm_up_a_fast_matrix-based_approach_to_computing_the_output_from_a_neural_network"><li>Khởi động: một cách tiếp cận dựa trên ma trận để tính đầu ra của mạng nơ-ron</li></a>
+            <a href="chap2.html#the_two_assumptions_we_need_about_the_cost_function"><li>Hai tiền đề về cost function mà chúng ta cần</li></a>
+            <a href="chap2.html#the_hadamard_product_$s_\odot_t$"><li>Tích Hadamard, $s \odot t$</li></a>
+            <a href="chap2.html#the_four_fundamental_equations_behind_backpropagation"><li>Bốn phương trình nền tảng của truyền ngược</li></a>
+            <a href="chap2.html#proof_of_the_four_fundamental_equations_(optional)"><li>Chứng minh của bốn phương trình nền tảng (không bắt buộc)</li></a>
+            <a href="chap2.html#the_backpropagation_algorithm"><li>Thuật toán truyền ngược</li></a>
+            <a href="chap2.html#the_code_for_backpropagation"><li>Code của truyền ngược</li></a>
+            <a href="chap2.html#in_what_sense_is_backpropagation_a_fast_algorithm"><li>Theo nghĩa gì thì truyền ngược là một thuật toán nhanh?</li></a>
+            <a href="chap2.html#backpropagation_the_big_picture"><li>Truyền ngược: bức tranh toàn cảnh</li></a></ul>
+          </p>
+        </div>
+        <script>
+          $('#toc_how_the_backpropagation_algorithm_works_reveal').click(function() { 
+            var src = $('#toc_img_how_the_backpropagation_algorithm_works').attr('src');
+            if(src == 'images/arrow.png') {
+              $("#toc_img_how_the_backpropagation_algorithm_works").attr('src', 'images/arrow_down.png');
+            } else {
+              $("#toc_img_how_the_backpropagation_algorithm_works").attr('src', 'images/arrow.png');
+            };
+            $('#toc_how_the_backpropagation_algorithm_works').toggle('fast', function() {});  
+          });
+        </script>
+      </p>
+      <p class='toc_mainchapter'>
+        <a id="toc_improving_the_way_neural_networks_learn_reveal" class="toc_reveal" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';"><img id="toc_img_improving_the_way_neural_networks_learn" src="images/arrow.png" width="15px"></a>
+        <a href="chap3.html">Cải thiện cách mạng nơ-ron học</a>
+        <div id="toc_improving_the_way_neural_networks_learn" style="display: none;">
+          <p class="toc_section"><ul><a href="chap3.html#the_cross-entropy_cost_function"><li>Về cross-entropy cost function</li></a>
+            <a href="chap3.html#overfitting_and_regularization"><li>Về Overfitting và regularization</li></a>
+            <a href="chap3.html#weight_initialization"><li>Khởi tạo trọng số</li></a>
+            <a href="chap3.html#handwriting_recognition_revisited_the_code"><li>Điểm lại về nhận diện chữ viết tay: code</li></a>
+            <a href="chap3.html#how_to_choose_a_neural_network's_hyper-parameters"><li>Làm thế nào để chọn hyper-parameters cho mạng nơ-ron?</li></a>
+            <a href="chap3.html#other_techniques"><li>Những kĩ thuật khác</li></a></ul>
+          </p>
+        </div>
+        <script>
+          $('#toc_improving_the_way_neural_networks_learn_reveal').click(function() { 
+            var src = $('#toc_img_improving_the_way_neural_networks_learn').attr('src');
+            if(src == 'images/arrow.png') {
+              $("#toc_img_improving_the_way_neural_networks_learn").attr('src', 'images/arrow_down.png');
+            } else {
+              $("#toc_img_improving_the_way_neural_networks_learn").attr('src', 'images/arrow.png');
+            };
+            $('#toc_improving_the_way_neural_networks_learn').toggle('fast', function() {});  
+          });
+        </script>
+      </p>
+      <p class='toc_mainchapter'>
+        <a id="toc_a_visual_proof_that_neural_nets_can_compute_any_function_reveal" class="toc_reveal" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';"><img id="toc_img_a_visual_proof_that_neural_nets_can_compute_any_function" src="images/arrow.png" width="15px"></a>
+        <a href="chap4.html">Chứng minh trực quan rằng mạng nơ-ron có thể tính bất cứ hàm nào</a>
+        <div id="toc_a_visual_proof_that_neural_nets_can_compute_any_function" style="display: none;">
+          <p class="toc_section"><ul>
+            <a href="chap4.html#two_caveats"><li>Hai lưu ý</li></a><a href="chap4.html#universality_with_one_input_and_one_output"><li>Tính phổ quát với một đầu vào và một đầu ra</li></a>
+            <a href="chap4.html#many_input_variables"><li>Nhiều biến đầu vào</li></a>
+            <a href="chap4.html#extension_beyond_sigmoid_neurons"><li>Mở rộng ngoài sigmoid nơ-ron</li></a><a href="chap4.html#fixing_up_the_step_functions"><li>Sửa chữa hàm bậc thang</li></a>
+            <a href="chap4.html#conclusion"><li>Kết luận</li></a></ul>
+          </p>
+        </div>
+        <script>
+          $('#toc_a_visual_proof_that_neural_nets_can_compute_any_function_reveal').click(function() { 
+            var src = $('#toc_img_a_visual_proof_that_neural_nets_can_compute_any_function').attr('src');
+            if(src == 'images/arrow.png') {
+              $("#toc_img_a_visual_proof_that_neural_nets_can_compute_any_function").attr('src', 'images/arrow_down.png');
+            } else {
+              $("#toc_img_a_visual_proof_that_neural_nets_can_compute_any_function").attr('src', 'images/arrow.png');
+            };
+            $('#toc_a_visual_proof_that_neural_nets_can_compute_any_function').toggle('fast', function() {});  
+          });
+        </script>
+      </p>
+      <p class='toc_mainchapter'>
+        <a id="toc_why_are_deep_neural_networks_hard_to_train_reveal" class="toc_reveal" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';"><img id="toc_img_why_are_deep_neural_networks_hard_to_train" src="images/arrow.png" width="15px"></a>
+        <a href="chap5.html">Tại sao mạng nơ-ron sâu lại khó train?</a>
+        <div id="toc_why_are_deep_neural_networks_hard_to_train" style="display: none;">
+          <p class="toc_section"><ul>
+            <a href="chap5.html#the_vanishing_gradient_problem"><li>Vấn đề vanishing gradient</li></a>
+            <a href="chap5.html#what's_causing_the_vanishing_gradient_problem_unstable_gradients_in_deep_neural_nets"><li>Cái gì gây nên vanishing gradient? Gradient không ổn định trong mạng nơ-ron sâu</li></a><a href="chap5.html#unstable_gradients_in_more_complex_networks"><li>Gradient không ổn định trong những mạng phức tạp hơn</li></a>
+            <a href="chap5.html#other_obstacles_to_deep_learning"><li>Những chướng ngại khác trong học sâu</li></a></ul>
+          </p>
+        </div>
+        <script>
+          $('#toc_why_are_deep_neural_networks_hard_to_train_reveal').click(function() { 
+            var src = $('#toc_img_why_are_deep_neural_networks_hard_to_train').attr('src');
+            if(src == 'images/arrow.png') {
+              $("#toc_img_why_are_deep_neural_networks_hard_to_train").attr('src', 'images/arrow_down.png');
+            } else {
+              $("#toc_img_why_are_deep_neural_networks_hard_to_train").attr('src', 'images/arrow.png');
+            };
+            $('#toc_why_are_deep_neural_networks_hard_to_train').toggle('fast', function() {});  
+          });
+        </script>
+      </p>
+      <p class='toc_mainchapter'>
+        <a id="toc_deep_learning_reveal" class="toc_reveal" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';"><img id="toc_img_deep_learning" src="images/arrow.png" width="15px"></a>
+        <a href="chap6.html">Deep learning</a>
+        <div id="toc_deep_learning" style="display: none;">
+          <p class="toc_section"><ul><a href="chap6.html#introducing_convolutional_networks"><li>Giới thiệu về mạng chập</li></a>
+            <a href="chap6.html#convolutional_neural_networks_in_practice"><li>Mạng nơ-ron chập trong thực tiễn</li></a>
+            <a href="chap6.html#the_code_for_our_convolutional_networks"><li>Code cho mạng chập của chúng ta</li></a>
+            <a href="chap6.html#recent_progress_in_image_recognition"><li>Những phát triển gần đây trong nhận diện ảnh</li></a>
+            <a href="chap6.html#other_approaches_to_deep_neural_nets"><li>Những cách tiếp cận khác tới học sâu</li></a>
+            <a href="chap6.html#on_the_future_of_neural_networks"><li>Về tuơng lai của mạng nơ-ron</li></a></ul>
+          </p>
+        </div>
+        <script>
+          $('#toc_deep_learning_reveal').click(function() { 
+            var src = $('#toc_img_deep_learning').attr('src');
+            if(src == 'images/arrow.png') {
+              $("#toc_img_deep_learning").attr('src', 'images/arrow_down.png');
+            } else {
+              $("#toc_img_deep_learning").attr('src', 'images/arrow.png');
+            };
+            $('#toc_deep_learning').toggle('fast', function() {});  
+          });
+        </script>
+      </p>
+      <p class="toc_not_mainchapter"><a href="sai.html">Phụ lục: Có không một thuật toán <em>đơn giản</em> cho trí thông minh?</a></p>
+      <p class="toc_not_mainchapter"><a href="acknowledgements.html">Cảm tạ</a></p>
+      <p class="toc_not_mainchapter"><a href="faq.html">Những câu hỏi thường gặp</a></p>
+      <hr>
+      <p class="sidebar"> Nếu bạn thấy quyển sách này bổ ích, hãy ủng hộ một số tiền nho nhỏ. Tôi gợi ý là $5, nhưng bạn có thể chọn số lượng.</p>
+      
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+        <input type="hidden" name="cmd" value="_s-xclick">
+        <input type="hidden" name="hosted_button_id" value="5K9YAHR4X84RN">
+        <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+        <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
+      </form>
+      
+      <hr>
+      <span class="sidebar_title">Nhà tài trợ: </span>
+      <br/>
+      
+      <a href='http://gsquaredcapital.com/'><img src='assets/gsquared.png' width='150px' style="padding: 0px 0px 10px 10px; border-style: none;"></a>
+      
+      <a href='http://www.tineye.com'><img src='assets/tineye.png' width='150px' style="padding: 0px 0px 10px 8px; border-style: none;"></a>
+      
+      <a href='http://www.visionsmarts.com'><img src='assets/visionsmarts.png' width='160px' style="padding: 0px 0px 0px 0px; border-style: none;"></a> 
+      <br/> 
+      
+      <p class="sidebar">Thanks to all the <a href="supporters.html">supporters</a> who made the book possible, with especial thanks to Pavel Dudrenov. Thanks also to all the contributors to the <a href="bugfinder.html">Bugfinder Hall of Fame</a>.</p>
+      
+      <hr>
+      <span class="sidebar_title">Tài liệu: </span>
+      
+      <p class="sidebar"><a href="https://twitter.com/michael_nielsen">Michael Nielsen on Twitter</a></p>
+      
+      <p class="sidebar"><a href="faq.html">Book FAQ</a></p>
+      
+      <p class="sidebar"><a href="https://github.com/mnielsen/neural-networks-and-deep-learning">Code repository</a></p>
+      
+      <p class="sidebar"><a href="http://eepurl.com/0Xxjb">Michael Nielsen's project announcement mailing list</a></p>
+      
+      <p class="sidebar"> <a href="http://www.deeplearningbook.org/">Deep Learning</a>, book by Ian Goodfellow, Yoshua Bengio, and Aaron Courville</p>
+      
+      <p class="sidebar"><a href="http://cognitivemedium.com">cognitivemedium.com</a></p>
+      
+      <hr>
+      <a href="http://michaelnielsen.org"><img src="assets/Michael_Nielsen_Web_Small.jpg" width="160px" style="border-style: none;"/></a>
+      
+      <p class="sidebar">
+        By <a href="http://michaelnielsen.org">Michael Nielsen</a> / Aug 2017
+      </p>
+    </div>
+    
+    Hệ thống thị giác của con người là một trong những kì quan của tạo hoá. Xem thử chuỗi những chữ số viết tay dưới đây: <a name="complete_zero"></a></p><p><center><img src="images/digits.png" width="160px"></center> </p>
+    <p>Hầu hết mọi người đều dễ dàng nhận ra đây là dãy số 504192. Sự dễ dàng đó thật ra không hề dễ tí nào. Ở mỗi bán cầu não người đều có vỏ não thị giác chính (primary visual cortex), còn được biết đến là V1, chứa khoảng 140 triệu nơ-ron (neurons) với hàng chục tỉ liên kết giữa chúng. Vậy mà thị giác con người không chỉ bao gồm V1, nó bao gồm cả một chuỗi những vỏ thị giác khác - V2, V3, V4, V5 - đảm nhận những tác vụ xử lý hình ảnh càng lúc càng phức tạp. Chúng ta mang trong đầu mình một siêu máy tính, được hiệu chỉnh qua hàng trăm triệu năm tiến hóa, và được thích nghi để hiểu thế giới thị giác một cách tuyệt vời. Nhận biết kí tự viết tay không hề dễ. Mà thực ra, con người chúng ta giỏi một cách đáng kinh ngạc trong việc giải nghĩa những gì mà mắt ta nhìn thấy. Nhưng hầu hết những công việc được thực hiện trong tiềm thức. Và như vậy ta không hay đánh giá cao cái vấn đề mà hệ thống thị giác của ta giải quyết nó phức tạp như thế nào.</p>
+    <p>Bạn sẽ thấy được sự phức tạp của việc nhận biết các pattern (kiểu mẫu) thị giác ngay khi bạn thử viết một chương trình máy tính để nhận biết chữ số viết tay như ở trên đây. Điều mà tưởng như cực kì dễ khi ta tự làm nó đột nhiên lại trở nên cực kì khó. Những điều trực quan đơn giản khi chúng ta nhận diện hình dáng - " số 9 có một vòng tròn trên đầu, và một nét đứng ở phía dưới bên phải" - hóa ra không hề dễ tí nào khi biểu diễn dưới dạng thuật toán. Khi bạn cố gắng tạo ra những quy tắc chính xác ấy, bạn sẽ bị lạc trong một rừng những ngoại lệ và trường hợp đặc biệt. Trông như vô vọng.</p>
+    <p></p>
+    <p>NMạng nơ-ron tiếp cận vấn đề theo một cách khác. Ý tưởng là lấy một lượng lớn những chữ số viết tay, gọi là training examples (ví dụ huấn luyện),</p><p><center><img src="images/mnist_100_digits.png" width="440px"></center></p>
+    <p>và sau đó phát triển một hệ thống có thể học từ những training examples đó. Nói cách khác, mạng nơ-ron sử dụng ví dụ mẫu để tự động suy ra những quy tắc phân biệt chữ viết tay. Ngoài ra, bằng cách tăng ví dụ mẫu (training examples), mạng có thể học thêm về chữ viết tay, từ đầy cải thiện độ chính xác. Trong khi tôi chỉ hiển hị 100 chữ số mẫu ở trên, chúng ta có thể xây dựng một hệ thống nhận diện chữ viết tay tốt hơn bằng cách sử dụng hàng ngàn hay thậm chí hàng triệu hoặc tỉ ví dụ mẫu.</p>
+    <p>Trong chương này chúng ta sẽ viết một chương trình máy tính sự dụng mạng nơ-ron để học cách phân biệt chữ số viết tay. Chương trình chỉ có 74 dòng và không sử dụng bất cứ thư viện mạng nơ-ron đặc biệt nào. Thế nhưng chương trình ngắn gọn này có thể nhận biết chữ viết tay với độ chính xác lên tới 96% mà không cần bất kì sự can thiệp nào từ con người. Ngoài ra, trong những chương sau chúng ta sẽ phát triển những ý tưởng mà có thể cải thiện độ chính xác lên tới hơn 99 phần trăm. Thực tế, những phần mềm mạng nơ-ron thương mại tốt tới nỗi được sử dụng bởi ngân hàng để xử lý chi phiếu và bởi bưu điện để nhận diện địa chỉ.</p>
+    <p>Chúng ta tập trung vào nhận diện chữ viết tay vì nó là một vấn đề mẫu rất tốt để học về mạng nơ-ron nói chung. Là một vẫn đề mẫu, nó bao gồm một vấn đề trọng yếu: nó khó - không hề đơn giản tẹo nào để có thể phân biệt chữ số viết tay - nhưng nó cũng không quá khó để cần một giải pháp cực kì phức tạp hoặc tốn nhiều sức mạnh xử lý. Ngoài ra nó là một cách tốt để phát triển những kĩ thuật phức tạp hơn như học sâu. Và như vậy, xuyên suốt quyển sách này chúng ta sẽ thường xuyên quay trở lại với vấn đề nhận diện chữ số viết tay này. Phần sau của quyển sách, chúng ta sẽ thảo luận về cách áp dụng những ý tưởng trên vào Thị giác máy tính (Computer Vision), cả về speech (nói), Xử lý ngôn ngữ tự nhiên (Natural Language Processing) và những miền khác.</p>
+    <p>Đương nhiên nếu mục đích của chương này chỉ là để viết một phần mềm nhận diện chữ viết tay thì chương này sẽ ngắn hơn nhiều! Nhưng dọc đường chúng ta sẽ cùng phát triển những ý tưởng quan trọng về mạng nơ-ron, bao gồm hai loại nơ-ron nhân tạo quan trọng (perceptron và sigmoid nơ-ron), và thuật toán học tiêu chuẩn cho mạng nơ-ron là stochastic gradient descent. Xuyên suốt, tôi tập trung vào giải thích <em>tại sao</em> mọi thứ lại được làm theo cách đó, và xây dựng trực quan của bạn về mạng nơ-ron. Nó yêu cầu một cuộc thảo luận dài hơn so với việc tôi chỉ chỉ cho bạn cách những điều cơ bản về cách vận hành của mạng nơ-ron, nhưng mà nó sẽ xứng đáng với sự hiểu biết kĩ càng mà bạn sẽ nắm được. Với cái giá phải trả đó, tới cuối chương bạn sẽ ở trong một tâm thế để hiểu học sâu là gì, và vì sao mà nó quan trọng.</p>
+    <p><h3><a name="perceptrons"></a><a href="#perceptrons">Perceptrons</a></h3></p>
+    <p>Một mạng nơ-ron network là gì? Để bắt đầu, tôi sẽ giải thích một loại nơ-ron nhân tạo được gọi là <em>perceptron</em>. Perceptrons được <a href="http://books.google.ca/books/about/Principles_of_neurodynamics.html?id=7FhRAAAAMAAJ">phát triển</a> vào những năm 1950 và 1960 bởi nhà khoa học <a href="http://en.wikipedia.org/wiki/Frank_Rosenblatt">Frank Rosenblatt</a>, lấy cảm hứng từ <a href="http://scholar.google.ca/scholar?cluster=4035975255085082870">nghiên cứu trước đó</a> của <a href="http://en.wikipedia.org/wiki/Warren_McCulloch">Warren McCulloch</a> và <a href="http://en.wikipedia.org/wiki/Walter_Pitts">Walter Pitts</a>. Ngày nay những nơ-ron nhân tạo khác được sử dụng phổ biến hơn - trong quyển sách này và trong cả những công trình hiện đại khác về mạng nơ-ron, mô hình nơ-ron được sử dụng chủ yếu là <em>sigmoid nơ-ron</em>. Chúng ta sẽ sớm bàn về sigmoid nơ-ron thôi. Nhưng để hiểu tại sao sigmoid nơ-ron được định nghĩa như bây giờ thì cũng đáng để chúng ta bỏ thời gian ra tìm hiểu về perceptron.</p>
+    
+    <p> Vậy perceptron hoạt động như thế nào? Một perceptron sẽ có đầu vô là nhiều giá trị nhị phân (binary) $x_1, x_2, \ldots$, và trả ra một giá trị nhị phân duy nhất: <center><img src="images/tikz0.png"/></center>                  Trong ví dụ đựa ra perceptron có 3 inputs, $x_1, x_2, x_3$. Tổng quan, nó có thể có nhiều hoặc ít input hơn. Rosenblatt đề xuật một quy tắc đơn giản để tính output. Ông ấy giới thiệu <em>trọng số (weight)</em>, $w_1,w_2,\ldots$, những số thực biểu diễn mức độ quan trọng của từng input đối với output. Output của nơ-ron, $0$ hoặc $1$, sẽ được xác định bằng cách xem biểu thức "tổng có trọng số" (weighted sum) $\sum_j w_j x_j$ nhỏ hơn hay lớn hơn một <em>giá trị ngưỡng (threshold value)</em> nào đó. Cũng giống như trọng số (weights),giá trị ngưỡng (threshold) cũng là một số thực và là một tham số của nơ-ron. Nói theo một cách đại số chính xác hơn: <a class="displaced_anchor" name="eqtn1"> </a> 
+      \begin{eqnarray}
+      \mbox{output} & = & \left\{ \begin{array}{ll}
+      0 & \mbox{if } \sum_j w_j x_j \leq \mbox{ threshold} \\
+      1 & \mbox{if } \sum_j w_j x_j > \mbox{ threshold}
+      \end{array} \right.
+      \tag{1}\end{eqnarray}
+      Đó là toàn bộ những gì ta có về cách hoạt động của một perceptron.
+    </p>
+    <p> Đó là mô hình toán học nền tảng. Bạn có thể nghĩ về perceptron theo kiểu nó là một thiết bị đưa ra quyết định bằng cách cân đo đong đếm (weighing up) các bằng chứng. Để tôi cho bạn một ví dụ. Đây không phải một ví dụ thực tế lắm, nhưng nó dễ hiểu và nó sẽ dẫn ta tới một ví dụ thực tế sớm thôi. Giả sử như cuối tuần sắp đến và sẽ có một lễ hội phô mai trong thành phố của bạn. Bạn thích phô mai và đang cân nhắc xem có nên tham gia lễ hội đó không. Bạn có thể đưa ra quyết định của mình bằng cách cân nhắc 3 yếu tố:
+      <ol>
+        <li> Thời tiết có đẹp không?</li>
+        <li> Bạn trai hoặc bạn gái của bạn có muốn đi chung không?</li>
+        <li> Lễ hội có ở gần trạm phương tiện công cộng không? (Bạn không có xe riêng)</li>
+      </ol>
+      Chúng ta thể hiện 3 yếu tố trên bằng ba biến nhị phân tương úng: $x_1, x_2$, và $x_3$. Lấy ví dụ, ta sẽ có $x_1 = 0$ nếu thời tiết xấu. Tương tự, $x_2 = 1$ nếu bạn trai/gái muốn đi cùng, và $x_2 = 0$ nếu không muốn. Và tương tự một lần nữa cho $x_3$ và phương tiện công cộng.
+    </p>
+    <p>Bây giờ giả sử bạn vô cùng thích phô mai, rất thích đến mức bạn thấy vui khi đi đến lễ hội ngay cả khi bạn trai hoặc bạn gái của bạn không quan tâm và lễ hội lại rất khó để tới được. Nhưng có lẽ bạn vô cùng ghét thời tiết xấu, và không có chuyện mà bạn muốn đi đến lễ hội nếu trời xấu. Bạn có thể sử dụng perceptron để mô phỏng kiểu ra quyết định này. Một cách để làm là chọn một trọng số (weight) $w_1 = 6$ cho thời tiết, $w_2 = 2$ và $w_3 = 2$ cho cái còn lại. Giá trị lớn hơn của $w_1$ cho biết rằng thời tiết rất quan trọng đối với bạn, còn nhiều hơn là việc bạn trai hoặc bạn gái của bạn có tham gia với bạn hay không hay độ xa của các trạm giao thông công cộng. Cuối cùng, giả dụ là bạn chọn một giá trị ngưỡng (threshold) $5$ cho perceptron. Với những thiết lập trên, perceptron sẽ hiện thực hóa mô hình ra quyết định mà bạn mong muốn, trả ra $1$ mỗi khi thời tiết tốt và $0$ mỗi khi thời tiết xấu. Nó không ảnh hưởng tới đầu ra cho dù bạn trai của bạn hay bạn gái có muốn đi hay không, hoặc liệu phương tiện công cộng có gần đó hay không.</p>
+    <p> Bằng cách thay đổi weights và threshold, chúng ta sẽ có nhưng mô hình (model) ra quyết định khác nhau. Ví dụ như ta chọn threshold là $3$. Lúc đó, perceptron sẽ quyết định rằng bạn nên đi đến lễ hội bất cứ khi nào thời tiết tốt <em>hoặc</em> khi cả lễ hội gần nơi công cộng quá cảnh <em>và</em> bạn trai hoặc bạn gái của bạn muốn đi cùng bạn. Nói cách khác, nó là một mô hình ra quyết định khác. Hạ threshold xuống có nghĩa là bạn sẵn lòng dự lễ hội hơn.</p>
+    <p>Rõ ràng, perceptron không phải là một mô hình hoàn chỉnh về cách ra quyết định của con người! Nhưng những cái mà ví dụ minh họa làm thế nào mà một perceptron có thể cân nhắc các trọng số (weights) khác nhau để đưa ra quyết định. Và có vẻ hợp lý rằng một mạng lưới perceptron phức tạp hơn có thể đưa ra những quyết định khá tinh tế:<center><img src="images/tikz1.png"/></center>
+      Trong mạng nơ-ron này, cột perceptrons đầu tiên - cái mà chúng ta sẽ gọi là <em>tầng (layer)</em> đầu tiên của những perceptrons - đang đưa ra ba quyết định đơn giản, bằng cách cân đo các bằng chứng đầu vào. Còn về những perceptron trong tầng thứ hai? Mỗi perceptrons trong đó đang đưa ra quyết định bằng cách đong đếm kết quả từ tầng đầu tiên của quá trình ra quyết định. Theo cách này perceptron trong lớp thứ hai có thể đưa ra quyết định phức tạp hơn và trừu tượng hơn perceptron trong tầng đầu. Và thậm chí các lựa chọn phức tạp hơn cũng có thể được thực hiện bởi perceptron tại tầng thứ ba. Bằng cách này, một mạng lưới các perceptrons nhiều lớp có thể tham gia vào việc đưa ra những quyết định phức tạp. 
+    </p>
+    <p>Thật tình cờ, lúc tôi định nghĩa Perceptron tôi đã nói rằng perceptron chỉ có một output. Trong mạng trên perceptron nào đều trông như nó có nhiều output. Trên thực tế, chúng vẫn chỉ là một output duy nhất. Các mũi tên khác nhau chỉ đơn thuần là một cách hữu ích để chỉ rằng đầu ra từ một perceptron đang được sử dụng làm đầu vào cho nhiều perceptron khác. Cách vẽ này dễ hơn so với việc vẽ một đầu ra duy nhất mà sau đó phải tách nó ra làm nhiều hướng</p>
+    <p>Hãy đơn giản hóa cách chúng ta miêu tả perceptrons. Điều kiện $\sum_j w_j x_j > \mbox{threshold}$ khá là rườm rà và chúng ta có thể tạo hai thay đổi về mặt kí hiệu để đơn giản hóa nó. Sự thay đổi đầu tiên là viết $\sum_j w_j x_j$ dưới dạng tích vô hướng (dot product), $w \cdot x \equiv \sum_j w_j x_j$, trong đó $w$ và $x$ lần lượt là vectơ có thành phần là trọng số và input. Thay đổi thứ hai là di chuyển threshold sang phía bên kia của bất phương trình, và thay nó bằng cái mà được biết đến là <em>bias (độ thiên vị)</em> của perceptron, $b \equiv - \mbox{threshold}$. Sử dụng bias thay cho threshold, quy tắc của perceptron có thể được viết lại: 
+      <a class="displaced_anchor" name="eqtn2"></a>
+      \begin{eqnarray}
+      \mbox{output} = \left\{ 
+        \begin{array}{ll} 
+        0 & \mbox{if } w\cdot x + b \leq 0 \\
+        1 & \mbox{if } w\cdot x + b > 0
+        \end{array}
+        \right.
+        \tag{2}
+        \end{eqnarray}
+        
+        Bạn có thể nghĩ về bias như là một thước đo về mức độ dễ để perceptron output giá trị $1$. Hoặc đặt nó trong ngữ cảnh sinh học,bias là thước đo về mức độ sẵn sàng để perceptron được <em>kích hoạt</em>. Một perceptron với bias rất lớn, thì nó cực kỳ dễ dàng để perceptron output $1$. Nhưng nếu bias là số rất âm, thì perceptron sẽ khó output giá trị $1$ hơn. Rõ ràng, việc giới thiệu bias chỉ là một sự thay đổi nhỏ trong cách chúng ta mô tả perceptron, nhưng chúng ta sẽ thấy sau này nó sẽ làm đơn giản nhiều bước trong việc kí hiệu. Do đó, trong phần còn lại của cuốn sách chúng ta sẽ không sử dụng threshold nữa, chúng ta sẽ chỉ luôn sử dụng bias.
+      </p>
+      
+      <p>Tôi đã mô tả perceptrons là một cách để cân đo những bằng bằng chứng để đưa ra quyết định. Một cách khác để sử dụng perceptron là dùng nó tính toán các hàm logic cơ bản mà ta thường nghĩ đến như là những phép tính nền tảng, ví dụ như các hàm <CODE>AND</CODE>, <CODE>OR</CODE> và <CODE>NAND</CODE>. Ví dụ, giả sử chúng ta có một perceptron với hai inputs, mỗi cái có weights $-2$, và bias về tổng thể là $3$. Đây là perceptron của chúng ta:<center><img src="images/tikz2.png"/></center> Giờ ta thấy input $00$ cho ra giá trị $1$, vì $(-2)*0+(-2)*0+3 = 3$ là số dương. Tại đây tôi viết kí hiệu $*$ để chỉ ro phép nhân ra. Tính toán tương tự cho thấy rằng với input $01$ và $10$ cho ra output $1$. Nhưng input $11$ cho ra $0$, vì $(-2)*1+(-2)*1+3 = -1$ là số âm. Vậy là perceptron của chúng ta đã mô phỏng một cái cổng <CODE>NAND</CODE>!</p>
+      <p><a name="universality"></a></p>
+      <p>Cái ví dụ về cổng <CODE>NAND</CODE> cho thấy ta có thể sử dụng perceptron để tính toán các hàm logic cơ bản. Trên thực tế, chúng ta có thể sử dụng các mạng perceptron để tính toán <em>bất kỳ</em> hàm logic nào. Lý do là <CODE>NAND</CODE> là một cổng phổ quát cho tính toán, có nghĩa là, chúng ta có thể xây dựng bất kỳ phép tính nào từ cổng <CODE>NAND</CODE>. Ví dụ: chúng ta có thể sử dụng cổng <CODE>NAND</CODE> tạo một mạch điện cộng hai bit lại, $x_1$ and $x_2$. Điều này yêu cầu tính tổng dựa trên từng cặp bit (bitwise), $x_1 \oplus x_2$, cũng như một bit nhớ được set là $1$ khi đồng thời $x_1$ và $x_2$ đều là $1$, i.e bit nhớ chỉ đơn giản là tích của từng cặp bit (bitwise) $x_1 x_2$:
+        <center>
+          <img src="images/tikz3.png"/>
+        </center> 
+        Để có được một mạng perceptron tương đương, chúng ta thay thế tất cả các cổng <CODE>NAND</CODE> bằng perceptron với hai input, mỗi cái có weight$-2$, và bias là $3$. Đây là kết quả. Lưu ý rằng tôi đã di chuyển perceptron tương ứng với cổng <CODE>NAND</CODE> phía dưới bên phải một chút, chỉ để vẽ các mũi tên trên sơ đồ cho dễ hơn:
+        <center><img src="images/tikz4.png"/></center>
+        Một khía cạnh đáng chú ý của mạng perceptron này là output từ perceptron bên trái được sử dụng hai lần như input cho perceptron dưới cùng. Khi tôi định nghĩa model perceptron tôi đã không nói liệu loại nhiều-output-tới-cùng-một-chỗ có được phép không. Thực ra, nó không quan trọng lắm. Nếu chúng ta không muốn cho phép điều này, thì có thể đơn giản kết hợp hai dòng lại thành một kết nối duy nhất với weight bằng -4 thay vì hai kết nối với weight bằng -2. (Nếu bạn không thấy điều này hiển nhiên, bạn nên dừng lại và tự chứng minh rằng 2 ý trên tương đương với nhau.) Với sự thay đổi đó, network sẽ trông như sau, với tất cả các trọng số không có đánh dấu thì bằng -2, tất cả các biases bằng 3, và một weight duy nhất là -4, như được đánh dấu:
+        <center>
+          <img src="images/tikz5.png"/>
+        </center>
+        Cho đến bây giờ tôi đã vẽ các đầu vào như $x_1$ và $x_2$ làm các biến trôi lềnh bềnh ở bên trái của mạng perceptrons. Trên thực tế, nó thường được vẽ thêm một lớp perceptron - <em>tầng</em> input - để mã hoá các inputs:
+        <center>
+          <img src="images/tikz6.png"/>
+        </center>
+        Ký hiệu perceptron đầu vào này, cái mà chỉ có output, nhưng không có inputs,
+        <center>
+          <img src="images/tikz7.png"/>
+        </center>
+        là một cách viết ngắn gọn. Nó không thật sự nghĩa là một perceptron mà không có inputs. Để thấy rõ hơn, giả sử chúng ta thật sự có một perceptron mà không có inputs. Vậy thì cái tổng có trọng số (weighted sum) $\sum_j w_j x_j$ sẽ luôn luôn bằng 0, và vậy thì perceptron sẽ output $1$ nếu $b > 0$, và $0$ nếu $b \leq 0$. Điều đấy nghĩa là perceptron sẽ luôn cho ra một giá trị cố định, không phải là giá trị mong muốn ($x_1$, trong ví dụ trên). Sẽ tốt hơn nếu bạn nghĩ input perceptron không phải là perceptron luôn mà là một đơn vị đặc biệt được định nghĩa để cho ra output là giá trị mong muốn, $x_1, x_2,\ldots$.
+      </p>
+      <p>Ví dụ phép tính cộng o737 trên đã minh chứng cách làm thế nào một mạng perceptrons có thể được sử dụng để mô phỏng một network có nhiều cổng <CODE>NAND</CODE>. Và bởi vì cổng <CODE>NAND</CODE> là mang tính phổ quát (universal) cho mọi phép tính toán, điều đó dẫn tới perceptron cũng mang tính phổ quát cho các phép tính.</p>
+      <p>Tính phổ quát tính toán (computational universality) của perceptron vừa đáng yên tâm lại đáng thất vọng. Nó yên tâm vì nó nói với chúng ta rằng các mạng perceptron có thể trở nên mạnh mẽ như bất kỳ thiết bị tính toán nào khác. Nhưng cũng đáng thất vọng, bởi vì nó làm cho perceptron nó có vẻ như chỉ là một loại cổng <CODE>NAND</CODE> khác mà thôi. Đây chả phải là tin đáng quan tâm lắm!</p>
+      <p>Tuy nhiên, tình hình thực tế tốt hơn so với cách nhìn nhận trên. Hóa ra là nó cho phép chúng ta tạo ra một <em>thuật toán học hỏi (learning algorithm)</em> có thể tự động điều chỉnh weights và biases của một nơ-ron network nhân tạo. Sự tinh chỉnh này xảy ra để phản hồi lại với kích thích từ bên ngoài, mà không có sự can thiệp trực tiếp nào từ lập trình viên. Các thuật toán học tập này cho phép chúng ta sử dụng các tế bào thần kinh nhân tạo theo cách hoàn toàn khác với cổng logic thông thường. Thay vì vẽ ra một mạch điện rõ ràng với  các cổng <CODE>NAND</CODE> khác nhau, neural network của chúng ta chỉ cần đơn giản là học cách để giải quyết vấn đề, đôi khi những vấn đề này sẽ cực kỳ khó khăn để trực tiếp thiết kế một mạch điện truyền thống.</p>
+      
+      <p><h3><a name="sigmoid_neurons"></a><a href="#sigmoid_neurons">Sigmoid nơ-ron</a></h3></p>
+      
+      <p>Thuật toán học hỏi nghe có vẻ tuyệt đấy.. Nhưng làm thế nào chúng ta có thể tạo ra một thuật toán như vậy cho một mạng nơron? Giả sử chúng ta có một mạng lưới perceptrons mà chúng ta muốn sử dụng để học cách để giải quyết một số vấn đề. Cho ví dụ, inputs đầu vào network có thể là dữ liệu pixel thô từ một bức ảnh chữ số viết tay được scanned lại. Và chúng ta muốn network tự tìm ra weights và biases để output từ network có thể phân loại chữ số một cách chính xác. Để xem quá trình học tập diễn ra như thế nào, giả sử như chúng ta tạo một sự thay đổi nhỏ trong một số weight (hoặc bias) trong network. Những gì chúng ta muốn là với một sự thay đổi nhỏ về weight sẽ gây ra chỉ một sự thay đổi nhỏ tương ứng trong output từ network. Như chúng ta sẽ thấy sắp tới, tính chất này sẽ làm cho việc học có thể diễn ra được. Dưới dạng sơ đồ, đây là những gì chúng ta muốn (rõ ràng là network này quá đơn giản để nhận dạng chữ viết tay!):</p>
+      <p><center><img src="images/tikz8.png"/></center></p>
+      <p>Nếu đúng là một sự thay đổi nhỏ về weight (hoặc bias) chỉ gây ra một sự thay đổi nhỏ trong đầu ra, thì chúng ta có thể sử dụng thực tế này để sửa đổi weight và bias để network của chúng ta cư xử theo cách chúng ta muốn. Ví dụ, giả sử network đã phân loại sai một hình là số "8" khi nó phải là số "9". Chúng ta có thể tìm ra cách để thực hiện một sự thay đổi nhỏ về weight và bias để network đến được gần hơn với việc phân loại hình này là "9". Và sau đó chúng ta lặp lại điều này, thay đổi weight và bias hết lần này đến lần khác để output càng lúc càng chính xác hơn. Network lúc đấy sẽ học tập.</p>
+      <p>Vấn đề là đây không phải là điều thực sự xảy ra khi network của chúng ta chứa perceptrons. Trong thực tế, một sự thay đổi nhỏ về weight hoặc bias của bất kỳ một perceptron trong network đôi khi có thể làm cho output của perceptron hoàn toàn đảo lộn, ví như từ $0$ thành $1$. Sụ đảo chiều đó sau này có thể gây ra sự thay đổi chóng vánh trong hành vi của toàn bộ phần còn lại của network theo những cách rất phức tạp. Vì vậy, trong khi số "9" của bạn bây giờ có thể được phân loại chính xác, hành vi của network trên tất cả các hình ảnh khác có thể đã thay đổi hoàn toàn theo những cách rất khó kiểm soát. Điều này làm cho công việc dần dần sửa đổi weight và bias ​​để network tiến tới gần hơn với hành vi mong muốn trở nên khó hơn nhiều. Có lẽ có cách thông minh nào đó để giải quyết vấn đề này. Nhưng nó không ngay lập tức rõ ràng là làm thế nào chúng ta có thể làm cho một mạng lưới perceptron học được.</p>
+      <p>Chúng ta có thể khắc phục vấn đề này bằng cách giới thiệu một loại neuron nhân tạo mới được gọi là <em>sigmoid</em> nơ-ron. Các nơ-ron sigmoid cũng tương tự như perceptron, nhưng đã được sửa lại để một sự thay đổi nhỏ về weight và bias của nó chỉ tạo ra một sự thay đổi nhỏ trong output. Đó là một kiến thức quan trọng cho phép một network sigmoid nơ-ron học được.</p>
+      <p> Được rồi, để tôi mô tả về neuron sigmoid. Chúng tôi sẽ biểu diễn các nơ-ron  sigmoid theo cùng cách mà chúng ta biễu diễn perceptron:
+        <center><img src="images/tikz9.png"/></center>
+        Giống như perceptron, neuron sigma có các inputs, $x_1, x_2,\ldots$. Nhưng thay vì chỉ là $0$ hoặc $1$, những inputs này có thể lấy bất kỳ giá trị nào <em>nằm giữa</em> $0$ và $1$. Vì vậy, ví dụ, $0.638 \ldots$ là một đầu vào hợp lệ cho một nơ-ron sigmoid. Cũng giống như một perceptron, neuron sigmoid có weight cho mỗi input, $w_1, w_2, \ldots $, và bias tổng quát,$b$. Nhưng output không phải là $0$ hoặc $1$ nữa. Thay vào đó, nó là $\sigma(w \cdot x+b)$, trong đó $\sigma$ được gọi là <em>hàm sigmoid</em>*
+        <span class="marginnote">*Thật tình cờ, $\sigma$ đôi khi còn được gọi là <em>hàm logistic</em> và loại nơ-ron mới này được gọi là <em>logistic no7-ron</em>. Nhớ những thuật ngữ này sẽ trở nên hữu dụng vì đây là thuật ngữ được sử dụng bởi nhiều người làm việc với neural network. Tuy nhiên, chúng ta vẫn sẽ trung thành với thuật ngữ sigmoid</span>
+        và được định nghĩa là: 
+        <a class="displaced_anchor" name="eqtn3"></a>
+        \begin{eqnarray} 
+        \sigma(z) \equiv \frac{1}{1+e^{-z}}.
+        \tag{3}\end{eqnarray}
+        Để nói ra cho rõ thêm một chút, output của một nơ-ron sigmoid với inputs $x_1,x_2,\ldots$, weights $w_1,w_2,\ldots$, và bias $b$ là 
+        <a class="displaced_anchor" name="eqtn4"></a>
+        \begin{eqnarray} 
+        \frac{1}{1+\exp(-\sum_j w_j x_j-b)}.
+        \tag{4}\end{eqnarray}
+      </p>
+      <p>Nhìn sơ qua, các nơ-ron thần kinh sigmoid dường như rất khác với perceptron. Dưới dạng đại số hàm sigmoid nhìn hơi khó hiểu và xa lạ nếu bạn không quen thuộc với nó. Trên thực tế, có nhiều điểm tương đồng giữa perceptron và các nơ-ron thần kinh sigmoid, và thể đại số của hàm sigmoid trở thành một chi tiết kỹ thuật hơn là một rào cản thực sự để hiểu được nó.</p>
+      <p>Để hiểu sự tương đồng với mô hình perceptron, giả sử $z \equiv w \cdot x + b$ là một số dương lớn. Sau đó $e^{-z} \approx 0$ và $\sigma(z) \approx 1$. Nói cách khác, khi $z = w \cdot x+b$ là số dương lớn, đầu ra từ nơ-ron sigmoid xấp xỉ $1$, cũng tương tụ như một perceptron. Mặt khác giả sử $z = w \cdot x+b$ là một số rất âm, khi đó $e^{-z} \rightarrow \infty$ và $\sigma(z) \approx 0$. Vì vậy, khi $z = w \cdot x +b$ là một số âm lớn, hành vi của một nơ-ron sigma cũng gần tương tự như một perceptron. Chỉ khi $w \cdot x+b$ có giá trị khiêm tốn thì mới có nhiều sự khác biệt so với mô hình perceptron</p>
+      <p>Còn về dạng đại số của $\sigma$ thì sao? Làm sao chúng ta có thể hiểu được nó? Thực tế, dạng chính xác của $\sigma$ không phải quá quan trọng - cái thực sự quan trọng là hình dạng của hàm số khi vẽ lên. Đây là đồ thị:</p>
+      <p>  
+        <div id="sigmoid_graph"><a name="sigmoid_graph"></a></div>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script>
+          function s(x) {return 1/(1+Math.exp(-x));}
+          var m = [40, 120, 50, 120];
+          var height = 290 - m[0] - m[2];
+          var width = 600 - m[1] - m[3];
+          var xmin = -5;
+          var xmax = 5;
+          var sample = 400;
+          var x1 = d3.scale.linear().domain([0, sample]).range([xmin, xmax]);
+          var data = d3.range(sample).map(function(d){ return {
+            x: x1(d), 
+            y: s(x1(d))}; 
+          });
+          var x = d3.scale.linear().domain([xmin, xmax]).range([0, width]);
+          var y = d3.scale.linear()
+          .domain([0, 1])
+          .range([height, 0]);
+          var line = d3.svg.line()
+          .x(function(d) { return x(d.x); })
+          .y(function(d) { return y(d.y); })
+          var graph = d3.select("#sigmoid_graph")
+          .append("svg")
+          .attr("width", width + m[1] + m[3])
+          .attr("height", height + m[0] + m[2])
+          .append("g")
+          .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+          var xAxis = d3.svg.axis()
+          .scale(x)
+          .tickValues(d3.range(-4, 5, 1))
+          .orient("bottom")
+          graph.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0, " + height + ")")
+          .call(xAxis);
+          var yAxis = d3.svg.axis()
+          .scale(y)
+          .tickValues(d3.range(0, 1.01, 0.2))
+          .orient("left")
+          .ticks(5)
+          graph.append("g")
+          .attr("class", "y axis")
+          .call(yAxis);
+          graph.append("path").attr("d", line(data));
+          graph.append("text")
+          .attr("class", "x label")
+          .attr("text-anchor", "end")
+          .attr("x", width/2)
+          .attr("y", height+35)
+          .text("z");
+          graph.append("text")
+          .attr("x", (width / 2))             
+          .attr("y", -10)
+          .attr("text-anchor", "middle")  
+          .style("font-size", "16px") 
+          .text("sigmoid function");
+        </script>
+      </p>
+      <p>Đồ thị này là một phiên bản đã được làm mượt của hàm bậc thang:</p>
+      <p>
+        <div id="step_graph"></div>
+        <script>
+          function s(x) {return x < 0 ? 0 : 1;}
+          var m = [40, 120, 50, 120];
+          var height = 290 - m[0] - m[2];
+          var width = 600 - m[1] - m[3];
+          var xmin = -5;
+          var xmax = 5;
+          var sample = 400;
+          var x1 = d3.scale.linear().domain([0, sample]).range([xmin, xmax]);
+          var data = d3.range(sample).map(function(d){ return {
+            x: x1(d), 
+            y: s(x1(d))}; 
+          });
+          var x = d3.scale.linear().domain([xmin, xmax]).range([0, width]);
+          var y = d3.scale.linear()
+          .domain([0,1])
+          .range([height, 0]);
+          var line = d3.svg.line()
+          .x(function(d) { return x(d.x); })
+          .y(function(d) { return y(d.y); })
+          var graph = d3.select("#step_graph")
+          .append("svg")
+          .attr("width", width + m[1] + m[3])
+          .attr("height", height + m[0] + m[2])
+          .append("g")
+          .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+          var xAxis = d3.svg.axis()
+          .scale(x)
+          .tickValues(d3.range(-4, 5, 1))
+          .orient("bottom")
+          graph.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0, " + height + ")")
+          .call(xAxis);
+          var yAxis = d3.svg.axis()
+          .scale(y)
+          .tickValues(d3.range(0, 1.01, 0.2))
+          .orient("left")
+          .ticks(5)
+          graph.append("g")
+          .attr("class", "y axis")
+          .call(yAxis);
+          graph.append("path").attr("d", line(data));
+          graph.append("text")
+          .attr("class", "x label")
+          .attr("text-anchor", "end")
+          .attr("x", width/2)
+          .attr("y", height+35)
+          .text("z");
+          graph.append("text")
+          .attr("x", (width / 2))             
+          .attr("y", -10)
+          .attr("text-anchor", "middle")  
+          .style("font-size", "16px") 
+          .text("step function");
+        </script>
+      </p>
+      <p>Nếu $\sigma$ mà là một hàm bậc thang thì sigmoid nơ-ron sẽ <em>là</em> perceptron, vì output sẽ là $1$ hoặc $0$ tùy thuộc vào việc $w\cdot x+b$ là dương hay âm*
+        <span class="marginnote">*Trên thực tế, khi $w \cdot x +b = 0$ perceptron sẽ output $0$, trong khi hàm bậc thang lại output $1$. Vì vậy, chặt chẽ mà nói, chúng ta cần phải sửa hàm bậc thang tại điểm đó. Nhưng mà bạn hiểu ý tưởng rồi đấy.</span>.
+        Bằng cách sử dụng hàm $\sigma$ thực tế mà chúng ta có, như đã được ngụ ý ở trên, là một perceptron đã được làm phẳng ra. Thực sự, cái sự phẳng ra đấy của hàm $\sigma$ mới là thực tế quan trọng, chứ không phải chi tiết hình thức của nó. Độ trơn của $\sigma$ có nghĩa là sự thay đổi nhỏ $\Delta w_j$ ở trọng số và $\Delta b$ trong bias sẽ tạo ra một sự thay đổi nhỏ $\Delta \mbox{output}$ ở đầu ra của neuron. Trong thực tế, môn giải tích (calculus) cho chúng ta biết rằng $\Delta \mbox{output}$ được xấp xỉ khá tốt bởi
+        <a class="displaced_anchor" name="eqtn5"></a>
+        \begin{eqnarray} 
+        \Delta \mbox{output} \approx \sum_j \frac{\partial \, \mbox{output}}{\partial w_j}
+        \Delta w_j + \frac{\partial \, \mbox{output}}{\partial b} \Delta b,
+        \tag{5}\end{eqnarray}
+        với cái tổng là trên mọi trọng số, $w_j$, và $\partial \,\mbox{output} / \partial w_j$ và $\partial \, \mbox{output} /\partial b$ lần lượt biểu thị đạo hàm riêng của $\mbox{output}$ xét theo $w_j$ và $b$. Đừng hoảng sợ nếu bạn không quen với đạo hàm riêng phần! Mặc dù các biểu thức ở trên trông phức tạp, với cả đống các đạo hàm riêng, nó thực sự nói một điều rất đơn giản (và đó là một tin tốt): $\Delta \mbox{output}$ là một <em>hàm tuyến tính</em> theo những thay đổi của$\Delta w_j$ và $\Delta b$ ở weights và bias. Tính tuyến tính này giúp ta dễ dàng chọn những thay đổi nhỏ về weights và bias để đạt được bất kỳ thay đổi nhỏ mong muốn nào ở đầu ra. Vì vậy, trong khi các nơ-ron sigmoid có nhiều hành vi định tính tương tự như perceptron, chúng làm cho nó dễ hơn nhiều để tìm ra cách thay đổi weights và biases sẽ thay đổi output.
+      </p>
+      <p>Nếu hình dạng của $\sigma$ mới là cái thực sự quan trọng, chứ không phải thể chính xác của nó, thì tại sao lại sử dụng cái biểu thức đó cho $\sigma$ ở Phương trình 
+        <span id="margin_648939192544_reveal" class="equation_link">(3)</span>
+        <span id="margin_648939192544" class="marginequation" style="display: none;">
+          <a href="chap1.html#eqtn3" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+            \begin{eqnarray} 
+            \sigma(z) \equiv \frac{1}{1+e^{-z}} \nonumber
+            \end{eqnarray}
+          </a>
+        </span>
+        <script>$('#margin_648939192544_reveal').click(function() {$('#margin_648939192544').toggle('slow', function() {});});</script>?  
+        Thực tế thì sau này trong cuốn sách chúng ta sẽ thỉnh thoảng xem xét nơ-ron mà đầu ra là $f(w \cdot x + b)$ cho một số <em>hàm kích hoạt (activation function)</em>  khác $f(\cdot)$. Điều chính yếu thay đổi khi chúng ta sử dụng một hàm kích hoạt khác là những giá trị cụ thể cho các đạo hàm riêng trong Phương trình
+        <span id="margin_520560492074_reveal" class="equation_link">(5)</span>
+        <span id="margin_520560492074" class="marginequation" style="display: none;"><a href="chap1.html#eqtn5" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+          \begin{eqnarray} 
+          \Delta \mbox{output} \approx \sum_j \frac{\partial \, \mbox{output}}{\partial w_j}
+          \Delta w_j + \frac{\partial \, \mbox{output}}{\partial b} \Delta b \nonumber
+          \end{eqnarray}</a>
+        </span>
+        <script>$('#margin_520560492074_reveal').click(function() {$('#margin_520560492074').toggle('slow', function() {});});</script>
+        thay đổi theo. Hóa ra rằng sau này khi chúng ta tính các đạo hàm riêng, sử dụng $\sigma$ sẽ đơn giản hóa về mặt đại số, đơn giản bởi vì hàm mũ có một đặc tính rất đáng yêu khi lấy đạo hàm. Trong mọi trường hợp, $\sigma$ thường được sử dụng trong nghiên cứu về mạng nơ-ron, và là activation fucntion mà chúng ta sẽ sử dụng thường xuyên nhất trong cuốn sách này.
+      </p>
+      <p>Chúng ta nên giải thích output từ một nơ-ron sigmoid như thế nào? Rõ ràng, một sự khác biệt lớn giữa perceptron và nơ-ron sigmoid là các nơ-ron sigmoid không chỉ output $0$ hoặc $1$. Nó có thể có đầu ra là bất kỳ số thực nào giữa $0$ và $1$, vì vậy các giá trị như $0.173\ldots$ và $0.689\ldots$ là các outputs hợp lệ. Điều này có thể hữu ích, vì ví dụ, nếu chúng ta muốn sử dụng giá trị đầu ra để đại diện cho mức cường độ trung bình của các điểm ảnh trong một tấm ảnh input của một mạng nơ-ron. Nhưng đôi khi nó có thể là một điều phiền toái. Giả sử chúng ta muốn output từ network là để cho biết "hình ảnh input là 9" hoặc "hình ảnh input không phải là 9 ". Rõ ràng, dễ nhất là nếu đầu ra chỉ là $0$ hoặc $1$, như với perceptron. Nhưng trên thực tế chúng ta có thể quy ước rằng bất kỳ output nào nhỏ nhất là $0,5$ sẽ biểu thị output là "9", và bất kỳ output nào nhỏ hơn $0,5$ sẽ biểu thị "không phải là 9". Tôi sẽ luôn nói rõ khi chúng ta đang sử dụng một quy ước như vậy, vì vậy nó sẽ không gây ra bất kỳ nhầm lẫn nào đâu.</p>
+      
+      <p>
+        <h4><a name="exercises_191892"></a><a href="#exercises_191892">Exercises</a></h4>
+        <ul>
+          <li>
+            <strong>Sigmoid nơ-ron mô phỏng perceptrons, phần I</strong>$\mbox{}$ <br/>
+            Giả sử chúng ta lấy tất cả weights và biases trong một mạng perceptrons, và nhân chúng với một hằng số dương, $c> 0$. Chỉ ra rằng hành vi của network không thay đổi.
+          </li>
+          <li><strong>Sigmoid nơ-ron mô phỏng perceptrons, phần II</strong> $\mbox{}$ <br/>
+            Giả sử chúng ta có cùng thiết lập với câu hỏi trên - một perceptron network. Giả sử rằng toàn bộ inputs cho perceptron network đã được xác định. Chúng tôi sẽ không cần inputs thật, chúng ta chỉ cần inputs đã được chọn trước. Giả sử weights và biases là $w \cdot x + b \neq 0$ với input $x$ cho bất kỳ perceptron cụ thể nào trong network. Bây giờ hãy thay thế tất cả các perceptron trong network bởi các nơ-ron sigmoid, và nhân với weights và biases cùng một hằng số dương $c> 0$. Chỉ ra rằng với giới hạn $c \rightarrow \infty$ hành vi của mạng sigmoid nơ-ron là tương tự như mạng perceptron. Điều này có thể sai như thế nào khi $w \cdot x + b = 0$ cho một trong các perceptrons?
+          </li>
+        </ul>
+      </p>
+      <p><h3><a name="the_architecture_of_neural_networks"></a><a href="#the_architecture_of_neural_networks">Kiến trúc của mạng nơ-ron</a></h3></p>
+      <p>Trong phần tiếp theo tôi sẽ giới thiệu một mạng nơ-ron có thể làm công việc phân loại chữ số viết tay khá tốt. Để chuẩn bị cho điều đó, sẽ rất có ích để tôi giải thích một số thuật ngữ cho phép chúng ta đặt tên các phần khác nhau của network. Giả sử chúng ta có mạng:
+        <center>
+          <img src="images/tikz10.png"/>
+        </center>
+        Như đã đề cập ở trên, lớp ngoài cùng bên trái trong network này được gọi là lớp đầu vào, và các nơ-ron trong lớp này được gọi là<em>input neurons</em>. Lớp ngoài cùng bên phải hay còn gọi là lớp <em>output</em> chứa <em>output neurons</em>, hoặc, trong trường hợp này, chứa một output nơ-ron duy nhất. Lớp ở giữa được gọi là <em>lớp ẩn (hidden layer)</em>, vì neurons trong lớp này không phải là inputs cũng như outputs. Thuật ngữ "ẩn" nghe có vẻ bí ẩn - lần đầu tiên tôi nghe thuật ngữ này tôi cứ nghĩ rằng nó phải có một ý nghĩa triết học hoặc toán học sâu sắc nào đó - nhưng nó thực sự không có nghĩa gì ngoài: "không phải là một input hoặc một output ". Network ở trên chỉ có một lớp ẩn duy nhất, nhưng một số network có nhiều lớp ẩn. Ví dụ: network bốn lớp có hai lớp ẩn:
+        <center>
+          <img src="images/tikz11.png"/>
+        </center>
+        MHơi gây nhầm lẫn một tí vì những lý do lịch sử, những network nhiều lớp như vậy đôi khi còn được gọi là <em>perceptrons đa lớp</em> hoặc <em>MLPs (Multilayer Perceptrons)</em>, mặc dù được cấu thành từ sigmoid neurons, chứ không phải perceptrons. Tôi sẽ không sử dụng thuật ngữ MLP trong cuốn sách này, vì tôi thấy nó rất khó hiểu, nhưng muốn cảnh báo bạn về sự tồn tại của nó.
+      </p>
+      <p>Việc thiết kế các lớp input và output trong network thường khá đơn giản. Ví dụ: giả sử chúng ta đang cố xác định xem một tấm ảnh chữ viết tay có vẽ số "9" hay không. Một cách hết sức tự nhiên để thiết kế mạng là bằng cách mã hóa cường độ của các điểm ảnh hình ảnh vào các input nơ-ron. Nếu tấm ảnh là được biểu thị dưới dạng greyscale (mức độ xám) $64$ nhân $64$, thì chúng ta sẽ có $4,096 =64 \times 64$ tế bào thần kinh inputs, với cường độ được điều chỉnh phù hợp giữa khoảng $0$ và $1$. Lớp output sẽ chỉ chứa một nơrôn duy nhất, với giá trị output ít hơn $0.5$ sẽ cho biết "hình ảnh đầu vào không phải là 9", và giá trị output lớn hơn $0.5$ sẽ cho biết "hình ảnh đầu vào là 9".</p>
+      <p></p>
+      <p></p>
+      <p>Trong khi việc thiết kế các lớp đầu vào và đầu ra của mạng nơron thường đơn giản, nó là cả một nghệ thuật để thiết kế các layers ẩn. Đặc biệt, ta không thể tổng hợp được những quy tắc thiết kế cơ bản cho hidden layers. Thay vào đó, các nhà nghiên cứu mạng nơ-ron đã phát triển nhiều thiết kế tự phát cho các lớp ẩn, giúp mọi người có được hành vi họ muốn từ network của họ. Ví dụ, những quy tắc tự phát như vậy có thể được sử dụng để giúp xác định cách đánh đổi giữa giảm thiểu số lượng các hidden layers và thời gian cần thiết để train network. Chúng ta sẽ gặp một vài cách thiết kế tự phát đó sau trong cuốn sách này.</p>
+      <p>Cho đến bây giờ, chúng ta đã thảo luận về các mạng thần kinh mà đầu ra từ một lớp được sử dụng làm đầu vào cho lớp tiếp theo. Các mạng như vậy là được gọi là mạng nơ-ron <em>truyền thẳng (feedforward)</em>. Điều này có nghĩa là sẽ không có vòng loop trong network - thông tin luôn luôn được cung cấp về phía trước, không bao giờ được cho trả ngược trở lại. Nếu chúng ta có vòng lặp, chúng ta sẽ gặp tình huống mà các đầu vào cho hàm $\sigma$ phụ thuộc vào đầu ra. Điều đó khó để hiểu, và vì vậy chúng ta không cho phép các vòng như vậy.</p>
+      <p>Tuy nhiên, có những mô hình khác của mạng thần kinh nhân tạo trong đó có thể có vòng lặp phản hồi. Những mô hình này được gọi là <a href="http://en.wikipedia.org/wiki/Recurrent_neural_network">recurrent neural networks (RNN) (mạng thần kinh tái phát)</a>. Ý tưởng trong các mô hình này là có nơ-ron kích hoạt trong một khoảng thời gian nhất định, sau đó trở nên im lặng. Việc kích hoạt này có thể kích thích các nơ-ron khác, có thể sẽ kích hoạt một vài nơ-ron sau đó, cũng trong một khoảng thời gian giới hạn. Điều đó kích hoạt nhiều tế bào thần kinh hơn, và như vậy theo thời gian chúng ta có một loạt các nơ-ron được kích hoạt. Vòng lặp không phải là vấn đề trong những mô hình như này, vì output của nơ-ron chỉ ảnh hưởng đến input của nó tại một số thời gian sau đó, không phải ngay lập tức.</p>
+      <p></p>
+      <p>Các mạng lưới thần kinh tái phát (RNN) có ít ảnh hưởng hơn so với mạng truyền thẳng (feedforward), một phần bởi vì các thuật toán học cho mạng tái phát ít mạnh mẽ hơn (ít nhất đến nay). Nhưng các mạng tái phát vẫn rất thú vị. Chúng giống với cách não làm việc hơn là feedforward. Và cũng có thể là các mạng RNN có thể giải quyết các vấn đề quan trọng mà mạng feedforward rất khó khăn mới có thể giải quyết được. Tuy nhiên, để giới hạn phạm vi của chúng ta, trong cuốn sách này chúng ta sẽ tập trung vào các mạng feedforward được sử dụng rộng rãi.</p>
+      <p><h3><a name="a_simple_network_to_classify_handwritten_digits"></a><a href="#a_simple_network_to_classify_handwritten_digits">Một mạng nơ-ron đơn giản để phân loại chữ số viết tay</a></h3></p>
+      <p>Sau khi đã định nghĩa mạng nơ-ron, chúng ta hãy trở lại với vấn đề xác định chữ viết tay. Chúng ta có thể phân chia vấn đề nhận dạng chữ số viết tay thành hai vấn đề phụ. Trước tiên, chúng ta muốn một cách để chia một hình ảnh chứa nhiều chữ số thành một chuỗi các hình ảnh riêng biệt, mỗi cái chứa một chữ số. Ví dụ: chúng tôi muốn chia hình</p>
+      <p><center><img src="images/digits.png" width="300px"></center></p>
+      <p>thành 6 hình riêng biệt,</p>
+      <p><center><img src="images/digits_separate.png" width="440px"></center></p>
+      <p>Con người chúng ta giải quyết vấn đề <em>phân khúc (segmentation)</em> này một cách dễ dàng, nhưng đó là một thử thách cho một chương trình máy tính để chia cắt hình ảnh chính xác. Một khi hình ảnh đã được phân đoạn, chương trình sau đó cần phải phân loại mỗi chữ số riêng biệt. Ví dụ, chúng ta muốn chương trình của mình nhận ra rằng chữ số đầu tiên ở trên,</p>
+      <p><center><img src="images/mnist_first_digit.png" width="64px"></center></p>
+      <p>là 5.</p>
+      <p>Chúng ta sẽ tập trung vào việc viết một chương trình để giải quyết vấn đề thứ hai, tức là, phân loại các chữ số riêng lẻ. Chúng ta làm điều này vì vấn đề phân đoạn không phải là quá khó để giải quyết, một khi bạn có một cách phân loại các chữ số riêng lẻ. Có nhiều cách tiếp cận để giải quyết vấn đề phân khúc. Một cách tiếp cận là thử nghiệm nhiều các cách phân chia hình ảnh khác nhau, sử dụng bộ phân loại (classifier) các chữ số riêng lẻ để tính điểm từng phân đoạn đã được thử. Phân đoạn được thử có một điểm số cao nếu classifier chữ số riêng lẻ tự tin rằng với việc phân loại của nó trong tất cả các phân đoạn, và một điểm số thấp nếu classifier gặp nhiều rắc rối trong một hoặc nhiều phân đoạn. Ý tưởng là nếu classifier đang gặp rắc rối ở đâu đó, thì đó có thể là vì phân khúc đã được chọn không chính xác. Ý tưởng này và các biến thể khác có thể được sử dụng để giải quyết bài toán phân đoạn khá tốt. Thay vì lo lắng về phân đoạn, chúng ta sẽ tập trung vào phát triển một mạng thần kinh có thể giải quyết vấn để thú vị và khó khăn hơn, cụ thể là, nhận diện chữ số viết tay.</p>
+      <p>Để nhận dạng các chữ số riêng lẻ, chúng ta sẽ sử dụng một mạng nơ-ron thần kinh ba lớp:</p>
+      <p><center><img src="images/tikz12.png"/></center></p>
+      <p>Lớp input của mạng chứa các nơ-ron mã hóa các giá trị các điểm ảnh đầu vào. Như được thảo luận trong phần tiếp theo, dữ liệu huấn luyện (training data) của chúng ta cho network sẽ bao gồm nhiều hình ảnh $28$ nhân $28$ pixels của chữ số viết tay được quét lại, và vì vậy lớp đầu vào chứa $784 = 28 \times 28$ nơ-ron. Để đơn giản tôi đã bỏ qua phần lớn của $784$ nơ-ron đầu vào trong sơ đồ ở trên. Các điểm ảnh đầu vào dựa trên thang độ xám (greyscale), với giá trị $0,0$ đại diện cho màu trắng, giá trị $ 1,0$ đại diện cho màu đen, và các giá trị ở giữa đại diện cho khoảng màu càng lúc càng xám hơn.</p>
+      <p>Lớp thứ hai của mạng là một lớp ẩn (hidden layer). Chúng tôi kí hiệu số nơ-ron trong lớp ẩn này bằng $n$, và chúng ta sẽ thử nghiệm với nhiều giá trị khác nhau cho $n$. Ví dụ trên minh hoạ một network nhỏ với hidden layer chứa chỉ $n = 15$ nơ-ron.</p>
+      <p>Lớp đầu ra của mạng chứa 10 neuron. Nếu nơ-ron đầu tiên được kích hoạt, tức là, có output là $\approx 1$, thì sẽ cho biết rằng network nghĩ rằng kí tự đó là số $0$. Nếu neuron thứ hai kích hoạt thì sẽ network sẽ nghĩ rằng kí tự đó là $1$. Và cứ tiếp theo như vậy. Một cách chính xác hơn, chúng ta đánh số output nơ-ron từ $0$ đến $9$, và nhìn xem nơ-ron nào có giá trị kích hoạt (activation value) cao nhất. Ví dụ như nếu neuron đó là neuron số $6$, thì network của chúng ta sẽ đoán rằng chữ số input là $6$. Và cứ như vậy cho các output nơ-ron khác.</p>
+      <p>Bạn có thể tự hỏi là tại sao chúng ta sử dụng $10$ output nơ-ron. Sau tất cả, mục tiêu của chúng ta là ta biết chữ số nào ($0, 1, 2, \ldots, 9$) tương ứng với hình ảnh đầu vào. Một cách khá tự nhiên là chỉ cần sử dụng $4$ tế bào nơ-ron đầu ra, coi mỗi nơ-ron như một giá trị nhị phân, phụ thuộc vào việc đầu ra của nơ-ron gần với $0$ hoặc $1$. Bốn neuron đủ để mã hóa câu trả lời, vì $ 2^4 = 16$ đã nhiều hơn 10 giá trị cho chữ số đầu vào. Tại sao network của chúng ta nên sử dụng $10$ neurons? Không phải vậy là không hiệu quả sao? Sự biện minh tối thượng là do thực nghiệm: chúng ta có thể thử thiết hai thiết kế mạng, và nó chỉ ra rằng, đối với vấn đề này, network với $10$ tế bào nơ-ron output học cách nhận diện số tốt hơn so với nơ-ron network với $4$ đầu ra. Nhưng điều đó sẽ làm ta tự hỏi rằng <em>tại sao</em> sử dụng $10$ output neurons lại hoạt động tốt hơn. Liệu có một số kinh nghiệm nào mà có thể cho chúng ta biết trước rằng chúng ta nên sử dụng $10$ output nơ-ron thay vì $4$ output nơ-ron để mã hóa output?</p>
+      <p>Để hiểu tại sao chúng ta làm vậy, sẽ có ích nếu ta nghĩ về những gì neural network đang làm từ first principles (những nguyên tắc đầu tiên). Đầu tiên xem xét trường hợp chúng ta sử dụng $10$ output neurons. Hãy tập trung vào output neuron đầu tiên, cái mà đang quyết định có số đó có phải là $0$ hay không. Nó làm điều đó bằng cách cân đếm các bằng chứng từ hidden layer của nơ-ron. Những nơ-ron ẩn này đang làm gì? Chỉ với mục đích lập luận, giả sử nơrôn đầu tiên trong hidden layer đang phát hiện liệu có xuất hiện hoặc không một hình ảnh như thế này:</p>
+      <p><center><img src="images/mnist_top_left_feature.png" width="130px"></center></p>
+      <p>Nó có thể làm điều này bằng cách xem xét cặn kẽ các pixel input có chồng lên với ảnh gốc, và chỉ xem xét sơ qua các pix input khác. Tương tự, vì mục đích lập luận, giả sử rằng neuron thứ hai, thứ ba, thứ tư trong hidden layer đang phát hiện xem có hay tồn tại hay không các hình sau đây:</p>
+      <p><center><img src="images/mnist_other_features.png" width="424px"></center></p>
+      <p>Như bạn đoán được, bốn hình ảnh này cùng nhau tạo thành hình ảnh số $0$ mà chúng ta thấy trong chữ số được hiển thị <a
+        href="#complete_zero">trước đó</a>:
+      </p>
+      <p><center><img src="images/mnist_complete_zero.png" width="130px"></center></p>
+      <p>Vì vậy, nếu tất cả bốn nơ-ron ẩn này được kích hoạt thì chúng ta có thể kết luận rằng chữ số đó là $0$. Tất nhiên, đó không phải là kiểu bằng chứng <em>duy nhất</em> mà ta có thể sử dụng để kết luận rằng hình ảnh đó là $0$ - chúng ta có thể nhận diện một $0$ bằng nhiều cách hợp lệ khác (như, các hình ảnh trên bị dịch chuyển hoặc bóp méo). Nhưng có vẻ an toàn để nói rằng ít nhất trong trường hợp này chúng ta có thể kết luận rằng input là số $0$.</p>
+      <p></p><p></p><p></p>
+      <p>Giả sử các hàm số trong neural network của ta hoạt động như thế này, ta có thể có giải thích hợp lý cho lý do tại sao nó tốt hơn để có $10$ output từ network, chứ không phải là $4$. Nếu chúng ta có $4$ outputs, thì nơ-ron đầu tiên sẽ xác định xem giá trị của bit quan trọng nhất (most significant bit) của chữ số đó là gì. Và không có cách đơn giản nào để kết nối những hình dạng đơn giản như ở trên tới nó được. Thật khó để tưởng tượng ra được có bất kỳ lý do lịch sử nào phù hợp để các hình dạng thành phần của chữ số có liên quan chặt chẽ đến bit quan trọng nhất trong output.</p>
+      <p>Bây giờ, với tất cả những gì đã nói, tất cả chỉ là thực nghiệm ra. Không có gì nói rằng mạng neurons ba lớp phải hoạt động theo cách tôi mô tả cả, với việc các nơ-ron ẩn phát hiện các thành phần hình dạng đơn giản. Có thể một thuật toán học hỏi thông minh sẽ tìm thấy một cách gán weights mà cho phép chúng ta chỉ dùng  $4$ output neurons. Nhưng theo một cách thực nghiệm thì cách tư duy của tôi hoạt động khá tốt, và có thể giúp bạn tiết kiệm rất nhiều thời gian trong việc thiết kế một kiến trúc neural network tốt.</p>
+      <p><h4><a name="exercise_513527"></a><a href="#exercise_513527">Exercise</a></h4>
+        <ul>
+          <li>Có một cách để xác định cách biểu diễn bitwise của một số bằng cách thêm một layer vào network ba lớp ở trên. Layer thêm vào sẽ chuyển đổi output từ lớp trước sang biểu diễn dưới dạng nhị phân, như được minh họa trong hình dưới đây. Tìm một tập hợp (set) weights và biases cho layer output mới. Giả sử rằng $3$ lớp nơ-ron đầu tiên hoạt động theo cách mà output chính xác ở lớp thứ ba (tức là lớp cũ) có giá trị ít nhất là $0,99$, và output của nơ-ron không chính xác đạt giá trị nhỏ hơn $0,01$.
+          </li>
+        </ul>
+      </p>
+      <p><center><img src="images/tikz13.png"/></center></p>
+      <p></p><p></p><p></p>
+      <p><h3><a name="learning_with_gradient_descent"></a><a href="#learning_with_gradient_descent">Học thông qua Gradient descent</a></h3></p>
+      <p></p>
+      <p>Bây giờ chúng ta đã có bản thiết kế cho mạng nơ-ron của chúng ta, vậy làm thế nào để nó có thể học cách nhận dạng chữ số? Điều đầu tiên chúng ta cần là bộ dữ liệu (dataset) để học từ đó - cái gọi là training dataset (tập dữ liệu huấn luyện). Chúng ta sẽ sử dụng <a href="http://yann.lecun.com/exdb/mnist/">MNIST data set</a>, có chứa hàng chục nghìn hình ảnh được quét lại từ chữ viết tay, cùng với nhãn đã phân loại chính xác của chúng. Tên của MNIST xuất phát từ việc nó là một tập con đã được sửa từ hai bộ dữ liệu được thu thập bởi <a href="http://en.wikipedia.org/wiki/National_Institute_of_Standards_and_Technology">NIST</a>,the United States' National Institute of Standards and Technology. Đây là một vài hình ảnh từ MNIST:</p>
+      <p><center><img src="images/digits_separate.png" width="420px"></center> </p>
+      <p>Như bạn thấy, những chữ số này, trên thực tế, giống như những chữ được hiển thị tại <a href="#complete_zero">beginning of this chapter</a> như là một thử thác. Tất nhiên, khi test network của chúng ta, chúng ta sẽ yêu cầu nó nhận diện những hình ảnh không có trong training set!</p>
+      <p>Dữ liệu MNIST có hai phần. Phần đầu tiên chứa 60.000 ảnh được sử dụng làm dữ liệu huấn luyện (training data). Những hình ảnh này được quét lại từ mẫu chữ viết tay từ 250 người, một nửa trong số đó là nhân viên của US Census Bureau, và một nửa trong số đó là học sinh trung học. Các hình ảnh có thang màu xám và kích thước là 28 x 28 pixel. Phần thứ hai của bộ dữ liệu MNIST là 10.000 hình ảnh được sử dụng làm dữ liệu thử nghiệm (test data). Cũng tương tự, đây là hình ảnh 28 nhân 28 trên thang màu xám. Chúng ta sẽ sử dụng test data để đánh giá mạng nơ-ron của chúng ta đã học được cách nhận dạng các chữ số tốt như thế nào. Để đảm bảo việc kiểm tra hiệu năng này là tốt, test data được lấy từ một nhóm 250 người <em>khác</em> so với training data ban đầu (mặc dù vẫn là một nhóm phân giữa nhân viên của US Census Bureau và học sinh). Điều này giúp chúng tôi tự tin rằng hệ thống của chúng tôi có thể nhận dạng chữ số từ những người mà chữ viết của họ không hề được thấy trong suốt quá trình train.</p>
+      <p>Chúng tôi sẽ sử dụng ký hiệu $x$ để biểu thị training input. Sẽ tiện hơn nếu xem mỗi training input $x$ là một vector $28 \times 28 = 784$ chiều. Mỗi mục trong vectơ đại diện cho giá trị trên thang màu xám cho một pixel đơn lẻ trong hình. Chúng ta sẽ kí hiệu output mong muốn tương ứng bởi $y = y(x)$, trong đó $y$ là một vector $10$ chiều. Ví dụ: nếu một hình ảnh training cụ thể, $x$, mô tả số $6$, thì $y(x) = (0, 0, 0, 0, 0, 0, 1, 0, 0, 0)^T$ là output mong muốn từ network. Lưu ý rằng $T$ ở đây là phép chuyển vị (transpose), biến một vector hàng ngang (row) thành một vector bình thường - cột (column).</p>
+      <p>Những gì chúng ta muốn là một thuật toán cho phép chúng ta tìm weights và biases để output từ network xấp xỉ $y(x)$ cho tất cả training input $x$. Để định lượng mức độ chính xác mà ta đạt được chúng ta định nghĩa một <em>hàm chi phí (cost function)</em>*<span class="marginnote">*Đôi khi được gọi là <em>mất mát (loss)</em> hoặc <em>mục tiêu (objective)</em>. Chúng ta sử dụng hàm phí tổn (cost function) trong suốt cuốn sách này, nhưng bạn nên lưu ý đến thuật ngữ vì nó thường được sử dụng trong các tài liệu nghiên cứu và các thảo luận về mạng nơron.</span>:
+        <a class="displaced_anchor" name="eqtn6"></a>
+        \begin{eqnarray}  C(w,b) \equiv
+        \frac{1}{2n} \sum_x \| y(x) - a\|^2.
+        \tag{6}
+        \end{eqnarray}
+        Ở đây, $w$ biểu thị tập hợp tất cả các trọng số trong mạng, $b$ là tất cả các biases, $n$ là tổng số các training input, $a$ là vector của đầu ra từ network khi $x$ được nhập vào, và tổng là dựa trên tất cả các training input, $x$. Tất nhiên, output $a$ phụ thuộc vào $x$, $w$ và $b$ nhưng để giữ ký hiệu được đơn giản tôi đã không chỉ rõ ra sự phụ thuộc này. Ký hiệu $\| v \|$ chỉ biểu thị hàm chiều dài thông thường cho một véc tơ $v$. Chúng tôi sẽ gọi $C$ hàm phí tổn <em>bậc hai</em>; nó cũng đôi khi được gọi là <em>mean squared error </em> hoặc chỉ <em>MSE</em>. Kiểm tra cost function bậc hai này về mặt hình thức, chúng ta thấy rằng $C(w,b)$ là không âm, vì mỗi phần tử trong tổng là không âm. Hơn nữa, cost $C(w,b)$ trở nên nhỏ đi thì $ C(w,b) \approx 0$, chính xác khi $y(x)$ xấp xỉ bằng output, $a$, cho tất cả các training inputs, $x$. Vì vậy, thuật toán học tập của chúng ta đã làm tốt công việc nếu nó có thể tìm thấy weights và biases để $C(w,b) \approx 0$. Ngược lại, nó không làm tốt khi $C(w,b)$ lớn - có nghĩa là $y(x)$ không gần giống với đầu ra $a$ cho một lượng lớn số lượng inputs. Vì vậy, mục đích của thuật toán đào tạo của chúng ta là làm tìm điểm cực tiểu (minimize) của cost $C(w,b)$ giống như một hàm số theo weights và biases. Nói cách khác, chúng ta muốn tìm một tập hợp weights và biases với cost thấp càng tốt. Chúng ta sẽ làm điều đó bằng cách sử dụng một thuật toán được biết đến là <em>gradient descent</em>.
+      </p>
+      <p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p>
+      <p>Tại sao lại giới thiệu hàm cost bậc hai? Chẳng phải rốt cuộc thì chúng ta chủ yếu quan tâm đến số lượng hình ảnh được phân loại chính xác bởi network? Tại sao không cố tối đa hóa trực tiếp số đó, mà lại sử dụng biện pháp ủy nhiệm như minimize hàm cost bậc hai? Vấn đề là số lượng hình ảnh được phân loại chính xác không phải là một hàm liên tục của weights và biases ​​trong network. Trong hầu hết trường hợp, những thay đổi nhỏ về weights và biases ​​sẽ không gây ra bất kỳ thay đổi nào cả về số các hình training được phân loại chính xác. Điều đó làm cho nó khó hơn để tìm ra cách thay đổi weights và biases để cải thiện hiệu suất. Nếu chúng ta sử dụng một hàm cost liên tục giống như hàm cost bậc 2, hóa ra là sẽ dễ để tìm cách để thực hiện những thay đổi nhỏ về weights và biases ​​để có được sự cải thiện về cost. Đó là lý do tại sao chúng ta tập trung đầu tiên vào việc minimize hàm cost bậc 2, và chỉ sau đó chúng ta mới kiểm tra việc phân loại có chính xác không.</p><p></p>
+      <p>Ngay cả khi chúng ta muốn sử dụng một hàm cost liên tục, bạn vẫn có thể tự hỏi tại sao chúng ta chọn hàm bậc hai trong phương trình 
+        <span id="margin_847255557645_reveal" class="equation_link">(6)</span>
+        <span id="margin_847255557645" class="marginequation" style="display: none;">
+          <a href="chap1.html#eqtn6" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+            \begin{eqnarray}  C(w,b) \equiv
+            \frac{1}{2n} \sum_x \| y(x) - a\|^2 \nonumber
+            \end{eqnarray}
+          </a>
+        </span>
+        <script>$('#margin_847255557645_reveal').click(function() {$('#margin_847255557645').toggle('slow', function() {});});</script>.
+        Đây có phải là một sự lựa chọn <em>đặc ứng (ad-hoc)</em>? Có thể nào nếu chúng ta chọn một cost function khác chúng ta có thể có một set weights và biases tối thiểu khác hoàn toàn? Đây là một mối quan tâm hợp lý và sau này ta sẽ xem xét lại cost function và thực hiện một số sửa đổi. Tuy nhiên, cost function bậc hai của phương trình <span id="margin_402291699805_reveal" class="equation_link">(6)</span>
+        <span id="margin_402291699805" class="marginequation" style="display: none;">
+          <a href="chap1.html#eqtn6" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';"
+          >\begin{eqnarray}  C(w,b) \equiv
+          \frac{1}{2n} \sum_x \| y(x) - a\|^2 \nonumber
+          \end{eqnarray}
+        </a>
+      </span>
+      <script>$('#margin_402291699805_reveal').click(function() {$('#margin_402291699805').toggle('slow', function() {});});</script> hoạt động tốt cho nhu cầu hiểu về kiến thức nên tảng của neural networks, vậy nên chúng ta sẽ tạm thời dính với nó.</p>
+      <p>Tóm tắt lại, mục tiêu của chúng ta trong việc train một mạng nơron là tìm ra weights và biases để minimize hàm cost bậc hai $C(w,b)$. Đây là một vấn đề tốt được trình bày rõ ràng, nhưng hiện nay nó có rất nhiều thành phần gây phân tâm - việc giải thích về ý nghĩa của $w$ và $b$ như là weights và biases, hàm $\sigma$ ẩn nấp ở phía dưới, sự lựa chọn về kiến trúc của network, MNIST,... Thực ra rằng chúng ta có thể hiểu một lượng lớn kiến thức bằng cách bỏ qua hầu hết các cấu trúc, và chỉ tập trung vào khía cạnh minimize. Vì vậy bây giờ chúng ta sẽ quên tất cả về hình thái cụ thể của hàm cost, những kết nối của mạng nơ-ron và vân vân. Thay vào đó, chúng ta sẽ tưởng tượng rằng chúng ta chỉ đơn thuần được trao cho một hàm số có nhiều biến và chúng ta muốn tìm cực tiểu (minimize) của hàm đó. Chúng ta sẽ phát triển một kỹ thuật được gọi là <em>gradient descent</em> mà có thể được sử dụng để giải quyết bài toán tìm cực tiểu ấy. Sau đó chúng ta sẽ quay lại với hàm cost cụ thể mà ta muốn minimize cho mạng nơron.</p>
+      <p>Okay, giả sử chúng ta đang cố gắng để minimize một hàm số, $C(v)$. Đây có thể là bất kỳ hàm số thực đa biến nào, $v = v_1, v_2, \ldots$. Lưu ý rằng tôi đã thay thế ký hiệu $w$ và $b$ bằng $v$ để nhấn mạnh rằng đây có thể là bất kỳ hàm số nào - chúng ta không suy nghĩ trong một ngữ cảnh mạng nơ-ron nữa. Để minimize $C(v)$, sẽ có ích nếu chúng ta coi $C$ như một hàm số có hai biến, chúng ta sẽ gọi chúng $v_1$ và $v_2$:</p>
+      <p><center><img src="images/valley.png" width="542px"></center></p>
+      <p>Điều chúng ta muốn là tìm ra điểm mà tại đó $C$ đạt được mức cực tiểu. Bây giờ, dĩ nhiên, đối với hàm số vẽ ở trên, chúng ta có thể dùng mắt để xem đồ thị và tìm ra điểm cực tiểu ngay lập tức. Theo cách đó, có lẽ tôi  đã cho xem một đồ thị hàm số <em>quá</em> đơn giản! Một hàm tổng quát, $C$, có thể là một hàm phức tạp đa biến, và nó thường sẽ không thể chỉ cần nhìn vào đồ thị để tìm thấy điểm tối thiểu.</p>
+      <p>Một cách giải quyết vấn đề là sử dụng giải tích (calculus) để phân tích ra điểm cực tiểu. Chúng ta có thể tính đạo hàm và sau đó sử dụng chúng để tìm ra điểm mà tại đó $C$ là một cực trị. May mắn thì cách này có thể hoạt động khi $C$ là một hàm chỉ có một hoặc vài biến. Nhưng nó sẽ biến thành một cơn ác mộng khi chúng ta có nhiều biến hơn. Va với mạng nơ-ron chúng ta thường sẽ muốn hơn <em>rất nhiều</em> biến -  mạng nơ ron lớn nhất có cost function phụ thuộc vào hàng tỷ weights và biases theo một cách vô cùng phức tạp. Sử dụng giải tích để minimize sẽ không xài được đâu!</p>
+      <p>(Sau khi khẳng định rằng chúng ta sẽ có được cái nhìn sâu sắc hơn bằng cách tưởng tượng $C$ là hàm số chỉ hai biến, tôi đã quay vòng hai lần trong hai đoạn và nói, "ê, nhưng nếu nó là hàm có nhiều hơn hai biến thì sao?" Xin lỗi vì điều đó. Xin hãy tin tôi khi tôi nói rằng sẽ tốt cho bạn nếu bạn tưởng tượng $C$ như là một hàm hai biến. Chỉ là đôi khi cái viễn cảnh đó đỗ vỡ, và hai đoạn văn cuối cùng giải quyết sự đổ vỡ đó. Trực giác tốt về toán học thường bao gồm việc nhảy qua lại giữa nhiều hình ảnh trực quan, học cách biết khi nào thì thích hợp để sử dụng hình ảnh đó, và khi nào thì không.)</p>
+      <p><a name="gradient_descent"></a></p>
+      <p>Ok, vì giải tích không sử dụng được. May mắn thay, có một mối tương quan cho thấy có khả năng một thuật toán hoạt động khá tốt. Chúng ta bắt đầu bằng cách nghĩ về hàm cost của ta như một thung lũng. Nếu bạn nheo mắt một chút ở hình trên, không quá khó để tưởng tượng ra. Và chúng ta tượng một quả bóng lăn xuống dốc của thung lũng. Những kinh nghiệm hàng ngày của chúng ta cho chúng ta biết rằng quả bóng cuối cùng sẽ chạy xuống đáy của thung lũng. Có lẽ chúng ta có thể sử dụng ý tưởng này như là một cách để tìm ra một điểm cực tiểu cho hàm số? Chúng ta sẽ ngẫu nhiên chọn một điểm khởi đầu cho quả bóng (tưởng tượng), và sau đó mô phỏng sự chuyển động của quả bóng khi nó lăn xuống dưới đáy thung lũng. Chúng ta có thể thực hiện mô phỏng này đơn giản bằng cách tính toán đạo hàm (và có lẽ một vài đạo hàm bậc hai) của $C$ - những đạo hàm sẽ cho chúng ta biết tất cả mọi thứ chúng ta cần biết hình dáng "lân cận" của thung lũng, và đó là hướng quả bóng nên lăn.</p>
+      <p>Dựa trên những gì tôi vừa viết, bạn có thể đoán rằng chúng ta sẽ viết ra các phương trình chuyển động của Newton cho quả bóng, xem xét các ảnh hưởng của ma sát và lực hấp dẫn, vân vân. Thực ra, ta sẽ không lấy mối tương quan của những quả bóng lăn quá nghiêm túc - chúng ta đang đưa ra một thuật toán để minimize $C$, không phải phát triển một mô phỏng chính xác của các định luật vật lý! Quả bóng là để kích thích trí tưởng tượng của chúng ta, không phải để hạn chế suy nghĩ của chúng ta. Vì thế thay vì đi vào các chi tiết phức tạp của vật lý, hãy tự hỏi: nếu chúng ta là Chúa trong một ngày, và có thể tạo những định luật vật lý riêng, quy định quả bóng nên lăn như thế nào, định luật nào ta có thể chọn mà làm cho quả bóng luôn lăn xuống đáy thung lũng?</p>
+      <p>Để câu hỏi chặt chẽ hơn, hãy suy nghĩ về những gì sẽ xảy ra khi chúng tôi di chuyển quả bóng một lượng nhỏ $\Delta v_1$ theo hướng $v_1$ và một lượng nhỏ $\Delta v_2$ theo hướng $v_2$. Calculus cho ta biết $C$ thay đổi như sau:
+        <a class="displaced_anchor" name="eqtn7"></a>
+        \begin{eqnarray} 
+        \Delta C \approx \frac{\partial C}{\partial v_1} \Delta v_1 +
+        \frac{\partial C}{\partial v_2} \Delta v_2.
+        \tag{7}
+        \end{eqnarray}
+        Chúng ta sẽ tìm cách chọn $\Delta v_1$ và $\Delta v_2$ sao cho $\Delta C$ âm; nghĩa là chúng ta chọn nó sao cho quả bóng lăn xuống thung lũng. Để tìm ra cách chọn như vậy thì sẽ có ích nếu định nghĩa $\Delta v$ là vector của những thay đổi diễn ra trong $v$, $\Delta v \equiv (\Delta v_1, \Delta v_2)^T$, trong đó $T$ một lần nữa là phép chuyển vị, chuyển vector hàng thành vector cột. Chúng ta cũng sẽ định nghĩa <em>gradient</em> của $C$ là vector chứa những đạo hàm riêng phần (partial derivative) $\left(\frac{\partial C}{\partial v_1}, \frac{\partial C}{\partial v_2}\right)^T$. Chúng ta kí hiệu vector gradient là $\nabla C$, ví dụ: <a class="displaced_anchor" name="eqtn8"></a>
+        \begin{eqnarray} 
+        \nabla C \equiv \left( \frac{\partial C}{\partial v_1}, 
+        \frac{\partial C}{\partial v_2} \right)^T.
+        \tag{8}
+        \end{eqnarray}
+        Trong giây lát chúng ta sẽ viết lại những thay đổi trong $\Delta C$ theo $\Delta v$ và gradient, $\nabla C$. Trước khi tới đó, tôi sẽ giải thích một số điều làm mọi người hay bị kẹt ở gradient. Khi lân đầu thấy kí hiệu $\nabla C$, mọi người thường không biết họ nên suy nghĩ như thế nào về kí hiệu $\nabla$? $\nabla$ (nabla), chính xác nghĩa là gì? Trên thực tế, hoàn toàn bình thường nếu nghĩ $\nabla C$ là một vật thể toán học duy nhất - một vector được định nghĩa ở trên - tình cờ lại được kí hiệu bằng 2 kí tự. Ở cách nghĩ này, $\nabla$ chỉ là một kí hiệu đánh dấu đơn thuần, nói cho bạn biết: "ê, $\nabla C$ là gradient của vector". Có những cách suy nghĩ cao cấp hơn trong đó $\nabla$ có thể được xem là một vật thể toán học riêng biệt, (ví dụ: là dấu đạo hàm), nhưng chúng ta không cần những cách nghĩ đó.
+      </p>
+      <p>Với những định nghĩa này, biểu thức <span id="margin_38398455185_reveal" class="equation_link">(7)</span>
+        <span id="margin_38398455185" class="marginequation" style="display: none;"><a href="chap1.html#eqtn7" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">\begin{eqnarray} 
+          \Delta C \approx \frac{\partial C}{\partial v_1} \Delta v_1 +
+          \frac{\partial C}{\partial v_2} \Delta v_2 \nonumber\end{eqnarray}</a>
+        </span>
+        <script>$('#margin_38398455185_reveal').click(function() {$('#margin_38398455185').toggle('slow', function() {});});</script> cho $\Delta C$ có thể viết lại như sau:
+        <a class="displaced_anchor" name="eqtn9"></a>
+        \begin{eqnarray} 
+        \Delta C \approx \nabla C \cdot \Delta v.
+        \tag{9}
+        \end{eqnarray}
+        Phương trình giúp giải thích tai sao $\nabla C$ được gọi là vector gradient: $\nabla C$ liên kết những thay đổi trong $v$ với thay đổi trong $C$, đúng với những gì ta mong đợi từ một thứ gọi là gradient. Nhưng cái đáng háo hức về phương trình này là nó cho ta biết cách để chọn $\Delta v$ để $\Delta C$ là âm. Cụ thể, giả sử ta chọn <a class="displaced_anchor" name="eqtn10"></a>
+        \begin{eqnarray} 
+        \Delta v = -\eta \nabla C,
+        \tag{10}
+        \end{eqnarray}
+        trong đó $\eta$ là tham số dương rất nhỏ (được gọi là <em>learning rate (tốc độ học)</em>). Khi đó phương trình <span id="margin_571879216625_reveal" class="equation_link">(9)</span>
+        <span id="margin_571879216625" class="marginequation" style="display: none;">
+          <a href="chap1.html#eqtn9" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+            \begin{eqnarray} 
+            \Delta C \approx \nabla C \cdot \Delta v \nonumber
+            \end{eqnarray}
+          </a>
+        </span>
+        <script>$('#margin_571879216625_reveal').click(function() {$('#margin_571879216625').toggle('slow', function() {});});</script>
+        cho chúng ta biết $\Delta C \approx -\eta \nabla C \cdot \nabla C = -\eta \|\nabla C\|^2$.  Bởi vì $\| \nabla C
+        \|^2 \geq 0$, điều này đảm bảo $\Delta C \leq 0$, tức là, $C$ sẽ luôn giảm, không bao giờ tăng, nếu ta thay đổi $v$ theo quy tắc <span id="margin_111367646825_reveal" class="equation_link">(10)</span>
+        <span id="margin_111367646825" class="marginequation" style="display: none;"><a href="chap1.html#eqtn10" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+          \begin{eqnarray} 
+          \Delta v = -\eta \nabla C \nonumber
+          \end{eqnarray}</a>
+        </span>
+        <script>$('#margin_111367646825_reveal').click(function() {$('#margin_111367646825').toggle('slow', function() {});});</script>.  (Tất nhiên vẫn trong giới hạn tới hạn của phương trình <span id="margin_125830819582_reveal" class="equation_link">(9)</span>
+        <span id="margin_125830819582" class="marginequation" style="display: none;"><a href="chap1.html#eqtn9" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+          \begin{eqnarray} 
+          \Delta C \approx \nabla C \cdot \Delta v \nonumber
+          \end{eqnarray}</a>
+        </span>
+        <script>$('#margin_125830819582_reveal').click(function() {$('#margin_125830819582').toggle('slow', function() {});});</script>). Đây chính xác là tài sản mà chúng tôi muốn! Và vì vậy ta sẽ lấy  Phương trình <span id="margin_591647588988_reveal" class="equation_link">(10)</span>
+        <span id="margin_591647588988" class="marginequation" style="display: none;"><a href="chap1.html#eqtn10" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+          \begin{eqnarray} 
+          \Delta v = -\eta \nabla C \nonumber
+          \end{eqnarray}</a>
+        </span>
+        <script>$('#margin_591647588988_reveal').click(function() {$('#margin_591647588988').toggle('slow', function() {});});
+        </script> để định nghĩa "định luật chuyển động" của quả bóng trong thuật toán gradient descent của chúng ta. Đó là, chúng ta sẽ sử dụng phương trình <span id="margin_270851530711_reveal" class="equation_link">(10)</span>
+        <span id="margin_270851530711" class="marginequation" style="display: none;"><a href="chap1.html#eqtn10" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+          \begin{eqnarray} 
+          \Delta v = -\eta \nabla C \nonumber\end{eqnarray}</a>
+        </span>
+        <script>$('#margin_270851530711_reveal').click(function() {$('#margin_270851530711').toggle('slow', function() {});});</script> để tính toán ra giá trị $\Delta v$, sau đó dịch chuyển vị trí $v$ của quá bóng với một khoảng như vậy:<a class="displaced_anchor" name="eqtn11"></a>
+        \begin{eqnarray}
+        v \rightarrow v' = v -\eta \nabla C.
+        \tag{11}
+        \end{eqnarray}
+        Rồi chúng tôi sẽ sử dụng lại quy tắc cập nhật này để di chuyển thêm một bước nữa. Nếu chúng ta cứ làm vậy lặp đi lặp lại, chúng ta sẽ tiếp tục giảm $C$ cho đến khi - hi vọng thế - chúng ta đạt được tới mức tối thiểu toàn cục (global minimum).
+      </p>
+      <p>Tổng kết, cách gradient descent hoạt động là nó cứ lặp lại việc tính gradient $\nabla C$, và sau đó cố gắng di chuyển theo hướng <em>ngược lại</em>, "lăn xuống" triền dốc của thung lũng. Chúng ta có thể hình dung nó như sau:
+      </p>
+      <p><center><img src="images/valley_with_ball.png" width="542px"></center></p>
+      <p>Lưu ý rằng với quy tắc này, gradient descent không tái hiện lại chuyển động vật lý trong thực tế. Trong cuộc sống thực, quả bóng sẽ có đà lăn (momentum), và động lực đó cho phép nó lăn qua triền dốc, hoặc thậm chí (tạm thời) lăn lên dốc. Chỉ sau khi các hiệu ứng của ma sát đã được xác định thì quả bóng mới bảo đảm sẽ lăn xuống dốc. Ngược lại, quy tắc của chúng ta trong việc chọn $\Delta v$ chỉ nói "đi xuống, ngay bây giờ". Đó vẫn là một quy tắc khá tốt  cho việc minimize!</p>
+      <p>Để gradient descent hoạt động chính xác, ta cần chọn tốc độ học $eta$ đủ nhỏ để Phương trình <span id="margin_69771133502_reveal" class="equation_link">(9)</span>
+        <span id="margin_69771133502" class="marginequation" style="display: none;"><a href="chap1.html#eqtn9" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+          \begin{eqnarray} 
+          \Delta C \approx \nabla C \cdot \Delta v \nonumber
+          \end{eqnarray}</a>
+        </span>
+        <script>$('#margin_69771133502_reveal').click(function() {$('#margin_69771133502').toggle('slow', function() {});});</script> ước lượng chính xác. Nếu không, ta có thể kết thúc với $\Delta C > 0$, điều mà rõ ràng là không tốt! Cùng lúc, ta lại không muôn $\eta$ quá nhỏ, vì nó sẽ làm cho cho những thay đổi $\Delta v$ nhỏ theo, và do đó thuật toán gradient descent sẽ chạy rất chậm. Trong thực tế, $\eta$ thường thay đổi để mà Phương trình <span id="margin_146854164456_reveal" class="equation_link">(9)</span>
+        <span id="margin_146854164456" class="marginequation" style="display: none;"><a href="chap1.html#eqtn9" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+          \begin{eqnarray} 
+          \Delta C \approx \nabla C \cdot \Delta v \nonumber
+          \end{eqnarray}</a>
+        </span>
+        <script>$('#margin_146854164456_reveal').click(function() {$('#margin_146854164456').toggle('slow', function() {});});</script> vẫn là một phép xấp xỉ tốt, nhưng thuật toán lại không quá chậm. Chúng ta sẽ xem nó hoạt động như thế nào sau.
+      </p>
+      <p>Tôi đã giải thích gradient descent khi $C$ là một hàm 2 biến. Nhưng, thực tế, mọi thứ hoạt động vẫn tốt ngay cả khi $C$ là một hàm nhiều biến hơn nữa. Giả sử cụ thể $C$ là một hàm có $m$ biến, $v_1,\ldots,v_m$. Khi đó thì thay đổi $\Delta C$ trong $C$ sẽ tạo ra một thay đổi nhỏ ở $\Delta v = (\Delta v_1, \ldots, \Delta v_m)^T$ là:<a class="displaced_anchor" name="eqtn12"></a>
+        \begin{eqnarray} 
+        \Delta C \approx \nabla C \cdot \Delta v,
+        \tag{12}
+        \end{eqnarray}
+        mà $\nabla C$ là vector <a class="displaced_anchor" name="eqtn13"></a>
+        \begin{eqnarray}
+        \nabla C \equiv \left(\frac{\partial C}{\partial v_1}, \ldots, 
+        \frac{\partial C}{\partial v_m}\right)^T.
+        \tag{13}
+        \end{eqnarray}
+        Cũng như trong trường hợp hai biến, chúng ta có chọn <a class="displaced_anchor" name="eqtn14"></a>
+        \begin{eqnarray}
+        \Delta v = -\eta \nabla C,
+        \tag{14}
+        \end{eqnarray}
+        và chúng ta đảm bảo là biểu thức (xấp xỉ) <span id="margin_603629239969_reveal" class="equation_link">(12)</span>
+        <span id="margin_603629239969" class="marginequation" style="display: none;">
+          <a href="chap1.html#eqtn12" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+            \begin{eqnarray} 
+            \Delta C \approx \nabla C \cdot \Delta v \nonumber
+            \end{eqnarray}
+          </a>
+        </span>
+        <script>$('#margin_603629239969_reveal').click(function() {$('#margin_603629239969').toggle('slow', function() {});});</script> cho $\Delta C$ là một số âm. Nó cho chúng ta một cách để đi theo gradient xuông cực tiểu, ngay cả khi $C$ là là một hàm đa biến, bằng cách áp dụng nhiều lần quy tắc update <a class="displaced_anchor" name="eqtn15"></a>
+        \begin{eqnarray}
+        v \rightarrow v' = v-\eta \nabla C.
+        \tag{15}
+        \end{eqnarray}
+        Bạn có thể nghĩ về quy tắc update này là cách <em>định nghĩa</em> thuật toán gradient descent. Nó cho chúng ta cách để liên tục thay đổi vị trí $v$ để tìm điểm cực tiểu của hàm $C$. Cách này không hoạt động trong mọi trường hợp - nhiều thứ có thể sai và không cho gradient descent tìm thấy global minimum của $C$, một điểm mà ta sẽ quay trở lại để khám phá trong các chương sau. Tuy nhiên, trong thực tế gradient descent thường hoạt động rất tốt, và trong các mạng nơron chúng ta sẽ thấy đó là một cách mạnh mẽ để minimize hàm cost funciton, và do đó giúp network học.
+      </p>
+      <p></p><p></p>
+      <p> Thật sự, có một cách nghĩ rằng gradient descent chính là phương pháp tối ưu để tìm điểm cực tiểu. Giả sử chúng ta đang cố bước $\Delta v$ theo hướng để giảm $C$ càng nhiều càng tốt. Điều này tương đương với việc minimize $\Delta C \approx \nabla C \cdot \Delta v$ . Chúng ta sẽ giới hạn kích thước của bước đi để $\|\Delta v \| = \epsilon$ với giá trị $\epsilon > 0$ nhỏ và không đổi. Theo cách khác, chúng ta muốn đi những bước nhỏ với kích thước cố định, và chúng ta muốn tìm hướng di chuyển giảm thiểu $C$ càng nhiều càng tốt. Có thể chứng minh được rằng chọn $\Delta v$ mà minimize $\nabla C \cdot \Delta v$ là $\Delta v = - \eta \nabla C$, mà $\eta = \epsilon / \|\nabla C\|$ được xác định bởi kích thước giới hạn $\|\Delta v\| = \epsilon$. Vậy nên gradient descent có thể được xem như một cách tiến những bước đi nhỏ theo hướng giảm thiểu ngay lập tức $C$ càng nhiều càng tốt.</p>
+      <p><h4><a name="exercises_647181"></a><a href="#exercises_647181">Exercises</a></h4>
+        <ul>
+          <li> Chứng minh khẳng định ở đoạn trên. <em>Gợi ý:</em> Nếu bạn không quen về 
+            <a href="http://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality">bất đẳng thức Cauchy-Schwarz
+            </a>, sẽ có ích nếu bạn làm quen với nó trước.
+          </li>
+          <li> Tôi giải thích gradient descent với $C$ là một hàm có hai biến và khi nó là hàm có đa biến. Bạn có thể đưa ra một giải thích hình học về gradient descent trong trường hợp một chiều.
+          </li>
+        </ul>
+      </p>
+      <p></p>
+      <p>Nhiều người đã nghiên cứu nhiều biến thể khác của gradient descent, gồm cả biến thế mô phỏng quả bóng giống trong vật lý hơn. Những biến thể mô phỏng quá bóng này có những lợi thế nhưng cũng có những bất lợi lớn: hóa ra là cần phải tính cả đạo hàm riêng phần bậc 2 của $C$, và điều này có thể khá tốn kém.  Để xem tại sao nó tốn kém, giả sử ta muốn tính tính toàn bộ đạo hào riêng phần bậc 2 $\partial^2 C/ \partial v_j \partial v_k$. Nếu có một triệu $v_j$ như vậy thì ta sẽ cần tính đâu khoảng một nghìn tỷ ( một triệu bình phương) đạo hàm riêng phần bậc 2*<span class="marginnote">*Actually, more like half a trillion, since $\partial^2 C/ \partial v_j \partial v_k = \partial^2 C/ \partial v_k \partial v_j$.  Still, you get the point.</span>! Điều đó sẽ tốn rất nhiều sức mạnh tính toán. Đã nói vậy, thì cũng phải nói thêm rằng sẽ có những mẹo để tránh các vấn đề kiểu này, và tìm một phương án thay thế cho gradient descent là một lĩnh vực nghiên cứu hoạt động khá mạnh. Nhưng trong cuốn sách này chúng ta sẽ dùng gradient descent (và biến thể) là phương pháp chính để cho neural network học.</p>
+      <p>Làm sao để áp dụng gradient descent cho nó học trong một mạng nơ-ron? Ý tưởng là sử dụng gradient descent để tìm ra weights $w_k$ và biases $b_l$ mà tối thiểu chi phí (cost) trong phương trình <span id="margin_355585703009_reveal" class="equation_link">(6)</span>
+        <span id="margin_355585703009" class="marginequation" style="display: none;">
+          <a href="chap1.html#eqtn6" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+            \begin{eqnarray}  C(w,b) \equiv
+            \frac{1}{2n} \sum_x \| y(x) - a\|^2 \nonumber
+            \end{eqnarray}
+          </a>
+        </span>
+        <script>$('#margin_355585703009_reveal').click(function() {$('#margin_355585703009').toggle('slow', function() {});});</script>. Để xem nó hoạt động thế nào, hãy viết lại quy tắc update của gradient descent, với weights và biases thay cho biến $v_j$. Nói cách khác, "vị trí" của chúng ta giờ bao gồm $w_k$ và $b_l$, và vector gradient $\nabla C$ có thành phần tương ứng $\partial C / \partial w_k$ và $\partial C / \partial b_l$. Viết lại quy tắc update của gradient descent bao gồm các thành phần, ta có <a class="displaced_anchor" name="eqtn16"></a><a class="displaced_anchor" name="eqtn17"></a>
+        \begin{eqnarray}
+        w_k & \rightarrow & w_k' = w_k-\eta \frac{\partial C}{\partial w_k} \tag{16}\\
+        b_l & \rightarrow & b_l' = b_l-\eta \frac{\partial C}{\partial b_l}.
+        \tag{17}
+        \end{eqnarray}
+        Bằng cách lặp lại những bước update đó ta có thể "lăn xuống đồi", và hi vọng sẽ thấy được điểm cực tiểu của hàm cost. Nói cách khác, đây là quy tắc có thể được sử dụng để học trong mạng nơ-ron nhân tạo.
+      </p>
+      <p>Có một số thử thách trong việc ứng dụng quy tắc gradient descent. Chúng ta sẽ nhìn kĩ vào chúng trong nhũng chương sau. Nhưng bây giờ tôi chỉ muốn nhắc tới một vấn đề duy nhất. Để hiểu vấn đề là gì, hãy nhìn lại hàm cost bac75 2 của ở phương trình <span id="margin_609783649913_reveal" class="equation_link">(6)</span>
+        <span id="margin_609783649913" class="marginequation" style="display: none;">
+          <a href="chap1.html#eqtn6" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+            \begin{eqnarray}  C(w,b) \equiv
+            \frac{1}{2n} \sum_x \| y(x) - a\|^2 \nonumber
+            \end{eqnarray}
+          </a>
+        </span>
+        <script>$('#margin_609783649913_reveal').click(function() {$('#margin_609783649913').toggle('slow', function() {});});</script>. Để ý rằng phương trình này có dạng $C = \frac{1}{n} \sum_x C_x$, tức nó là trung bình của costs $C_x \equiv \frac{\|y(x)-a\|^2}{2}$ cho từng ví dụ training riêng lẻ. Trên thực tế, để tính gradient $\nabla C$ chúng ta cần tính gradients $\nabla C_x$  riêng lẻ cho từng training input, $x$, và tính trung bình của chúng $\nabla C = \frac{1}{n} \sum_x \nabla C_x$. Không may là khi số lượng training input quá lớn thì sẽ tốn một khoảng thời gian rất lâu, do đó quá trình học sẽ chậm đi.
+      </p>
+      <p>Một ý tưởng gọi là <em>stochastic gradient descent (gradient descent hỗn loạn)</em> có thể tăng tốc độ hoc lên. Ý tưởng là sẽ xấp xỉ gradient $\nabla C$ bằng cách tính $\nabla C_x$ cho một tập nhỏ được chọn ngẫu nhiên từ training inputs. Bằng cách tính trung bình của tập con này thì chúng ta có thể nhanh chóng xấp xỉ gradient chuẩn $\nabla C$, do đó tăng tốc độ học của gradient descent.</p>
+      <p>Để làm cho ý tưởng rõ ràng hơn, stochastic gradient descent hoạt động bằng cách chọn ngẫu nhiên một số nhỏ $m$ training input. Chúng ta sẽ đánh dấu những training inputs là $X_1, X_2, \ldots, X_m$, và gọi chúng là <em>mini-batch</em>. Giả sử thì size mẫu $m$ đủ lớn thì chúng ta mong đợi giá trị trung bình của $\nabla C_{X_j}$ sẽ gần bằng với trung bình của toàn bộ $\nabla C_x$, tức là, <a class="displaced_anchor" name="eqtn18"></a>
+        \begin{eqnarray}
+        \frac{\sum_{j=1}^m \nabla C_{X_{j}}}{m} \approx \frac{\sum_x \nabla C_x}{n} = \nabla C,
+        \tag{18}
+        \end{eqnarray}
+        trong đó cái tổng thứ hai là của toàn bộ training data. Đổi chỗ ta có <a class="displaced_anchor" name="eqtn19"></a>
+        \begin{eqnarray}
+        \nabla C \approx \frac{1}{m} \sum_{j=1}^m \nabla C_{X_{j}},
+        \tag{19}
+        \end{eqnarray} 
+        xác nhận rằng ta có thể ước lượng gradient tổng thể bằng cách tính gradients chỉ qua chọn mini-batch ngẫu nhiên.
+      </p>
+      <p>Để kết nối nó tới việc học trong neural networks, giả sử $w_k$ và $b_l$ đại diện cho weights và biases trong neural network của chúng ta. Khi đó stochestic gradient descent hoạt động bằng cách chọn ngẫu nhiên một mini-batch của training inputs, và training với chúng, <a class="displaced_anchor" name="eqtn20"></a><a class="displaced_anchor" name="eqtn21"></a>
+        \begin{eqnarray} 
+        w_k & \rightarrow & w_k' = w_k-\frac{\eta}{m}
+        \sum_j \frac{\partial C_{X_j}}{\partial w_k} \tag{20}\\  
+        b_l & \rightarrow & b_l' = b_l-\frac{\eta}{m}
+        \sum_j \frac{\partial C_{X_j}}{\partial b_l},
+        \tag{21}
+        \end{eqnarray}
+        trong đó tổng là của toàn bộ training examples $X_j$ trong cái mini-batch hiện thời. Sau đó chúng ta chọn ra một mini-batch ngẫu nhiên khác và train với chúng. Và cứ như vậy cho tới khi ta xài hết toàn bộ training inputs, và gọi đó là hoàn thành train một <em>epoch</em>. Tới lúc này chúng ta bắt đầu lại từ đầu với một training epoch
+      </p>
+      <p>Và cũng tình cờ, đáng để lưu ý rằng có nhiều quy ước khác nhau về cách nhân rộng lên (scaling) của cost function và của cách update mini-batch cho weights và biases. Trong phương trình <span id="margin_239763744580_reveal" class="equation_link">(6)</span><span id="margin_239763744580" class="marginequation" style="display: none;"><a href="chap1.html#eqtn6" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+        \begin{eqnarray}  C(w,b) \equiv
+        \frac{1}{2n} \sum_x \| y(x) - a\|^2 \nonumber
+        \end{eqnarray}</a></span>
+        <script>$('#margin_239763744580_reveal').click(function() {$('#margin_239763744580').toggle('slow', function() {});});</script> ta nhân hàm cost tổng quan với một hệ số $\frac{1}{n}$. Nhiều người đôi khi bỏ mất phần $\frac{1}{n}$, lấy tổng cost của từng training examples riêng lẻ thay vì lấy trung bình của chúng. Điều này lại đặc biết hữu dụng khi tổng số training examples lại không được biết từ trước. Điều này có thể xảy ra nếu nhiều training inputs được tạo ra theo thời gian thực. Và, theo cách tương tự, quy tắc update mini-batch 
+        <span id="margin_722176973034_reveal" class="equation_link">(20)</span>
+        <span id="margin_722176973034" class="marginequation" style="display: none;">
+          <a href="chap1.html#eqtn20" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+            \begin{eqnarray} 
+            w_k & \rightarrow & w_k' = w_k-\frac{\eta}{m}
+            \sum_j \frac{\partial C_{X_j}}{\partial w_k}  \nonumber
+            \end{eqnarray}
+          </a>
+        </span>
+        <script>$('#margin_722176973034_reveal').click(function() {$('#margin_722176973034').toggle('slow', function() {});});</script> và 
+        <span id="margin_937362634928_reveal" class="equation_link">(21)</span>
+        <span id="margin_937362634928" class="marginequation" style="display: none;">
+          <a href="chap1.html#eqtn21" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+            \begin{eqnarray}  
+            b_l & \rightarrow & b_l' = b_l-\frac{\eta}{m}
+            \sum_j \frac{\partial C_{X_j}}{\partial b_l} \nonumber
+            \end{eqnarray}
+          </a>
+        </span>
+        <script>$('#margin_937362634928_reveal').click(function() {$('#margin_937362634928').toggle('slow', function() {});});</script> đôi khi bỏ $\frac{1}{m}$ ra khỏi phần trước của tổng. Về mặt khái niệm nó không tạo ra khác biệt gì, vì nó cũng tương đương với việc nhân lên với learning rate $\eta$. Nhưng khi đang so sánh kĩ càng về một công trình nào đó, nó đáng để lưu ý tới.
+      </p>
+      <p>Chúng ta có thể nghĩ về stochastic gradient descent giống như bỏ phiếu trong chính trị: lấy mẫu trong một mini-batch nhỏ thì dễ hơn hiều so với việc ứng dụng gradiet descent cho cả lô (full batch), cũng giống như thăm dò phiếu bầu thì dễ hơn là làm luôn một cuộc bầu cử thiệt. Ví dụ nếu ta ta có training set với size $n = 60,000$, như trong MNIST, và chọn mini-batch size là (giả dụ) $m = 10$, tức là chúng ta sẽ có một hệ số tăng tốc tới $6,000$ trong việc xấp xỉ gradient! Dĩ nhiên xấp xỉ thì sẽ không chính xác tuyệt đối - sẽ có những biến thiên về mặt xác suất - nhưng mà nó không cần phải hoàn hảo: tất cả những gì ta quan tâm là di chuyển theo một hướng chung chung về phía sẽ giúp làm giảm $C$, và nó nghĩa là chúng ta không cần tính toán chính xác cho gradient. Trong thực hành stochastic gradient descent là một cách thông dụng và mạnh mẽ để học trong neural network, và nó là nền tảng cho hầu hết những kĩ thuật học hỏi mà chúng ta sẽ phả triển trong cuốn sách này.
+      </p><p></p><p></p><p></p><p></p><p></p>
+      <p>
+        <h4><a name="exercise_263792"></a><a href="#exercise_263792">Exercise</a></h4>
+        <ul>
+          <li> Một phiên bản cực đoan của gradient descent là sử dụng mini-batch size là 1. Tức là cho một training input, $x$, ta sẽ update weights và biases theo quy tắc $w_k \rightarrow w_k' = w_k - \eta \partial C_x / \partial w_k$ và $b_l \rightarrow b_l' = b_l - \eta \partial C_x / \partial b_l$. Sau đó ta chọn một training input khác, và update weights và biases lần nữa. Và cứ lặp lại như vậy. Quy trình này được gọi là học <em>online</em>, <em>on-line</em>, hoặc <em>incremental (tăng tiến)</em>. Trong học online, một neural network một lần chỉ học từ một training input (giống như con người vậy). Chỉ ra một lợi thế và bất lợi của online learning khi so sánh với stochastic gradient descent với mini-batch size là, ví dụ, $20$.
+          </li>
+        </ul>
+      </p>
+      <p>Để kết thúc phần này, chúng ta sẽ bàn về một vấn đề mà thường làm bối rồi khá nhiều người khi mới làm quen với gradient descent. Trong neural networks, cost $C$ là, đương nhiên, là một hàm số đa biến - toàn bộ weights và biases - và như vậy theo vài cách hiểu thì nó định nghĩa một mặt phẳng ở một chiều không gian rất lớn. Nhiều người chững lại tại đây và nghĩ: "Ê, tôi phải có khả năng hình dung ra tất cẩ những chiều không gian ấy". Và họ bắt đầu lo lắng: "Tôi không thể nghĩ về bốn chiều không gian được chứ nói gì năm chiều (hay năm triệu chiều)". Họ có đang thiếu mất một khả năng đặc biệt nào không, một khả năng mà những nhà toán học siêu cấp "thật" mới có? Đương nhiên câu trả lời là không. Thậm chí hầu hết những nhà toán học chuyên nghiệp cũng không suy nghĩ tốt lắm trong 4 chiều không gian, đấy là nếu họ có thể nghĩ được. Cái thủ thuật họ dùng thay thế là phát triển một cách khác để biễu diễn những thứ đang diễn ra. Đó chính xác là những gì chúng ta làm ở trên: ta sử dụng đại số (thay vì hình học) để biễu diễn $\Delta C$ để tìm ra cách di chuyển để giảm $C$. Những người mà giỏi suy nghĩ trong những chiều không gian cao hơn có những thư viện trong trí óc chứa những kĩ thuật khác nhau; mẹo đại số của chúng ta là một ví dụ trong đó. Những kĩ thuật này có thể không có được sự đơn giản mà ta đã quen với như khi hình dung mọi thứ trong 3 chiều không gian, nhưng một khi đã xây được một thư viện những kĩ thuật như thế, bạn có thể trở nên khá giỏi trong việc suy nghĩ trong không gian đa chiều. Tôi sẽ không đi vào chi tiết ở đây, nhưng nếu bạn có hứng thú thì có thể bạn sẽ thích đọc <a href="http://mathoverflow.net/questions/25983/intuitive-crutches-for-higher-dimensional-thinking">cuộc thảo luận này</a> về những kĩ thuật của những giáo sư toán học sử dụng để suy nghĩ trong nhiều chiều không gian. Có những kĩ thuật rất phức tạp nhưng có những nội dung tốt nhất thì khá trực quan và dễ tiếp cận, và có thể được làm chủ bời mọi người.</p><p></p>
+      
+      <p><h3><a name="implementing_our_network_to_classify_digits"></a><a href="#implementing_our_network_to_classify_digits">Hoàn thành mạng nơ-ron của chúng ta để phân loại chữ số</a></h3></p>
+      
+      <p>Được rồi, hãy viết một chương trình để học và phân loại chữ số viết tay, sử dụng stochastic gradient descent và bộ MNIST training data. Chúng ta sẽ thực hiện nó với một chương trình Python (2.7) ngắn, chỉ có 74 dòng code! Điều đầu tiên ta cần làm là lấy được MNIST data. Nếu bạn sử dụng <tt>git</tt> thì bạn có thể lấy data bằng cách clone code repository của quyển sách,</p>
+      <p><div class="highlight">
+        <pre><span></span>git clone https://github.com/mnielsen/neural-networks-and-deep-learning.git</pre></div>
+      </p>
+      <p>Nếu bạn không xài <tt>git</tt> thì bạn có thể download data và code
+        <a href="https://github.com/mnielsen/neural-networks-and-deep-learning/archive/master.zip"> tại đây</a>.
+      </p>
+      <p>Tình cờ,  trước đây khi tôi mô tả MNIST data, tôi nói nó được chia thành 60.000 hình training, và 10.000 hình testing. Đó là những mô tả chính thức về MNIST. Trên thực tế, chúng ta sẽ phân chia data hơi khác một chút. Chúng tôi sẽ để hình ảnh test như cũ, nhưng chia 60.000 hình ảnh training MNIST thành hai phần: một bộ 50.000 hình ảnh mà chúng ta sẽ sử dụng để train neural network của chúng ta, và một <em>validation set (bộ xác nhận)</em> 10.000 hình ảnh. Chúng ta sẽ không sử dụng validation data trong chương này, nhưng sau đó trong cuốn sách chúng ta sẽ thấy nó hữu ích trong việc làm thế nào để thiết lập một số <em>hyper-parameters (siêu tham số)</em> của mạng neural network - những thứ như learning rate, vv ... mà không được trực tiếp lựa chọn từ thuật toán học của chúng ta. Mặc dù validation data không phải là một phần của đặc điểm kỹ thuật gốc của MNIST, khá nhiều người sử dụng MNIST theo cách này, và việc sử dụng validation data khá phổ biến trong neural network. Từ giờ khi tôi nhắc tới "dữ liệu training MNIST", ý tôi bộ dữ liệu 50.000 hình ảnh của chúng ta, không phải là bộ dữ liệu 60.000 hình ảnh gốc*<span class="marginnote">
+        *Như đã nói ở trên, bộ dữ liệu MNIST dựa trên hai bộ dữ liệu được sưu tập bởi NIST, Viện Nghiên cứu Quốc gia Hoa Kỳ Tiêu chuẩn và Công nghệ. Để xây dựng dataset MNIST, bộ dataset NIST đã được tinh giản và đưa về một định dạng thuận tiện hơn bởi Yann LeCun, Corinna Cortes, và Christopher J. C. Burges. Xem <a href="http://yann.lecun.com/exdb/mnist/">link này</a> để biết thêm chi tiết. for more
+        details. Bộ dữ liệu trong repo của tôi ở định dạng dễ để tải và thao tác với nó trong Python. Tôi lấy dữ liệu dưới dạng đặc biệt này phòng thí nghiệm Machine Learning LISA tại Đại học Montreal (<a href="http://www.deeplearning.net/tutorial/gettingstarted.html">link</a>).
+      </span>.</p><p>
+      </p>
+      <p>Ngoài dataset MNIST chúng ta cũng cần một thư viện Python tên là <a href="http://numpy.org">Numpy</a>, để có thể tính toán đại số nhanh chóng. Nếu bạn chưa cài đặt Numpy, bạn có thể tải nó <a href="http://www.scipy.org/install.html">tại đây</a>.</p>
+      <p>Để tôi giải thích các tính năng cốt lõi của code neural network, trước khi liệt kê nó đầy đủ, dưới đây. Trọng tâm là một class <tt>Network</tt>, mà chúng ta sử dụng để biểu diễn một mạng neural network. Đây là đoạn code chúng ta sử dụng để khởi tạo một object <tt>Network</tt>:</p>
+      <p>
+        <div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Network</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+          
+          <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sizes</span><span class="p">):</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span> <span class="o">=</span> <span class="n">sizes</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">biases</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">sizes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> 
+          <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sizes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">sizes</span><span class="p">[</span><span class="mi">1</span><span class="p">:])]</span>
+        </pre></div>
+      </p>
+      <p>Trong đoạn code, cái list <tt>sizes</tt> chứa số neurons trong mỗi layer tương ứng. Vậy nên, ví dụ, nếu ta muốn tạo một object <tt>Network</tt> với 2 neurons ở layer thử nhất, 3 neurons ở layer thứ 2, và 1 neuron ở layer cuối cùng, chúng ta sẽ làm nó với dòng code:
+        <div class="highlight"><pre><span></span><span class="n">net</span> <span class="o">=</span> <span class="n">Network</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        </pre></div>
+        
+        <a name="weight_initialization"></a> Biases và weights ở trong object <tt>Network</tt> đều được khởi tạo ngẫu nhiên, sử dụng function Numpy <tt>np.random.randn</tt> để tạo ra phân phối Gaussian với trung bình $0$ và độ lệch chuẩn là $1$. Khởi tạo ngẫu nhiên như thế này cho thuật toán stochastic gradient descent một điểm để bắt đầu. Ở những chương sau, chúng ta sẽ tìm những cách tốt hơn để khởi tạo weights và biases, nhưng bây giờ thế này là đủ. Lưu ý là code khởi tạo <tt>Network</tt> giả định rằng layer neurons đầu tiên là input layer, và không gán bất kì biases nào cho những neurons đó, vì biases chỉ được sử dụng để tính output của những layers sau.
+      </p>
+      <p>Lưu ý luôn là biases và weights được lưu dưới dạng lists của ma trận Numpy. Vậy nên, ví dụ <tt>net.weights[1]</tt> là một ma trận Numpy chứa weights kết nối neurons ở layers thứ 2 và layer thứ 3 lại với nhau. (Nó không phải là layers thứ nhất và thứ 2, vì Python đánh số list bắt đầu tại <tt>0</tt>.)  Vì <tt>net.weights[1]</tt> hơi rườm rà, hãy kí hiệu nó là matrix $w$. Matrix đó có dạng như sau: $w_{jk}$ là weigth cho kết nối giữa neuron thứ $k^{\rm th}$ ở layer thứ hai, và neuron $j^{\rm th}$ ở layer thứ 3. Thứ tự của chỉ số $j$ và $k$ có vẻ hơi lạ - chắc rằng nó sẽ có nghĩa hơn khi đổi ngược chỉ số $j$ and $k$ lại? Lợi thế lớn để sử dụng thứ tự này là các neurons vector của lớp activations thứ ba là: 
+        <a class="displaced_anchor" name="eqtn22"></a>
+        \begin{eqnarray} 
+        a' = \sigma(w a + b).
+        \tag{22}
+        \end{eqnarray}
+        Có khá nhiều thứ diễn ra trong phương trình này, vì vậy hãy giải nén nó ra từng chút một. $a$ là neurons vector của lớp activation thứ hai. Để có $a'$ chúng ta nhân $a$ theo ma trận trọng số weights $w$, và cộng với vector biases $b$. Sau đó chúng ta lầ lượt áp dụng hàm $\sigma$ với mọi hạng mục trong véc tơ $w a + b$.(Cái này được gọi là <em>vectorizing (vector hóa)</em> hàm $\sigma$.) Rất dễ để xác minh rằng phương trình <span id="margin_2249102916_reveal" class="equation_link">(22)</span>
+        <span id="margin_2249102916" class="marginequation" style="display: none;"><a href="chap1.html#eqtn22" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+          \begin{eqnarray} 
+          a' = \sigma(w a + b) \nonumber
+          \end{eqnarray}</a>
+        </span>
+        <script>$('#margin_2249102916_reveal').click(function() {$('#margin_2249102916').toggle('slow', function() {});});
+        </script> cho ra kết quả giống với quy tắc trước đây của chúng ta, phương trình <span id="margin_839356235461_reveal" class="equation_link">(4)</span>
+        <span id="margin_839356235461" class="marginequation" style="display: none;"><a href="chap1.html#eqtn4" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+          \begin{eqnarray} 
+          \frac{1}{1+\exp(-\sum_j w_j x_j-b)} \nonumber
+          \end{eqnarray}</a>
+        </span>
+        <script>$('#margin_839356235461_reveal').click(function() {$('#margin_839356235461').toggle('slow', function() {});});
+        </script>, để tính output của một neuron sigmoid.
+      </p>
+      <p><h4><a name="exercise_852508"></a><a href="#exercise_852508">Bài tập</a></h4>
+        <ul>
+          <li> Viết ra phương trình <span id="margin_167543109717_reveal" class="equation_link">(22)</span>
+            <span id="margin_167543109717" class="marginequation" style="display: none;"><a href="chap1.html#eqtn22" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+              \begin{eqnarray} 
+              a' = \sigma(w a + b) \nonumber
+              \end{eqnarray}</a>
+            </span>
+            <script>$('#margin_167543109717_reveal').click(function() {$('#margin_167543109717').toggle('slow', function() {});});</script> dưới dạng thành phần và xác minh rằng nó cho ra kết quả giống với quy tắc <span id="margin_607358700391_reveal" class="equation_link">(4)</span>
+            <span id="margin_607358700391" class="marginequation" style="display: none;"><a href="chap1.html#eqtn4" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+              \begin{eqnarray} 
+              \frac{1}{1+\exp(-\sum_j w_j x_j-b)} \nonumber
+              \end{eqnarray}</a>
+            </span>
+            <script>$('#margin_607358700391_reveal').click(function() {$('#margin_607358700391').toggle('slow', function() {});});
+            </script> để tính output của neuron sigmoid.
+          </li>
+        </ul>
+      </p>
+      <p>Với tất cả những thứ này trong đầu, khá dễ để viết code tính ra output từ một <tt>Network</tt>. Chúng ta bắt đầu bằng cách định nghĩa hàm sigmoid:
+        <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+          <span class="k">return</span> <span class="mf">1.0</span><span class="o">/</span><span class="p">(</span><span class="mf">1.0</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span></pre>
+        </div>
+        
+        Lưu ý rằng khi input <tt>z</tt> là một vector hoặc Numpy array, Numpy sẽ tự động apply hàm <tt>sigmoid</tt> với từng thành phần một, tức là ở dưới dạng đã được vector hóa.
+      </p>
+      <p>Sau đó chúng ta thêm một hàm <tt>feedforward</tt> vào class <tt>Network</tt>, cái mà khi được cho một input <tt>a</tt> trong network, trả ra một output tương ứng*<span class="marginnote">*Giả định rằng input <tt>a</tt> là một Numpy ndarray <tt>(n, 1)</tt>, không phải vector <tt>(n,)</tt>. Ở đây, <tt>n</tt> là số inputs của network. Nếu bạn thử sử dụng một vector <tt>(n,)</tt> dưới dạng input bạn sẽ có những kết quả kì lạ. Mặc dù việc sử dụng vector <tt>(n,)</tt> có vẻ tự nhiên hơn, sử dụng một ndarray <tt>(n, 1)</tt> sẽ làm thực tế dễ dàng để thay đổi code để có thể feedforward nhiều input cùng một lúc, và điều đó nhiều lúc khá là hữu dụng.</span>. Tất cả mọi thứ function làm là áp dụng phương trình <span id="margin_149279408786_reveal" class="equation_link">(22)</span>
+        <span id="margin_149279408786" class="marginequation" style="display: none;"><a href="chap1.html#eqtn22" style="padding-bottom: 5px;" onMouseOver="this.style.borderBottom='1px solid #2A6EA6';" onMouseOut="this.style.borderBottom='0px';">
+          \begin{eqnarray} 
+          a' = \sigma(w a + b) 
+          \nonumber\end{eqnarray}</a>
+        </span><script>$('#margin_149279408786_reveal').click(function() {$('#margin_149279408786').toggle('slow', function() {});});
+        </script> cho mỗi layer:
+        <div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">feedforward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+          <span class="sd">&quot;&quot;&quot;Return the output of the network if &quot;a&quot; is input.&quot;&quot;&quot;</span>
+          <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">biases</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">):</span>
+          <span class="n">a</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span><span class="o">+</span><span class="n">b</span><span class="p">)</span>
+          <span class="k">return</span> <span class="n">a</span>
+        </pre></div>
+      </p>
+      <p>Đương nhiên, điều chính mà chúng ta muốn object <tt>Network</tt> làm là học. Để làm được điều đó ta sẽ cho nó phương pháp <tt>SGD</tt>, viết tắt cho stochastic gradient descent.  Đây là đoạn code. Nó hơi bí hiểm ở một vài chỗ, nhưng tôi sẽ giải thích kĩ ở phía dưới, sau khi liệt kê ra tại đây.</p>
+      <p><div class="highlight"><pre><span></span>
+        <span class="k">def</span> <span class="nf">SGD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">training_data</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">mini_batch_size</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span>
+        <span class="n">test_data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Train the neural network using mini-batch stochastic</span>
+        <span class="sd">        gradient descent.  The &quot;training_data&quot; is a list of tuples</span>
+        <span class="sd">        &quot;(x, y)&quot; representing the training inputs and the desired</span>
+        <span class="sd">        outputs.  The other non-optional parameters are</span>
+        <span class="sd">        self-explanatory.  If &quot;test_data&quot; is provided then the</span>
+        <span class="sd">        network will be evaluated against the test data after each</span>
+        <span class="sd">        epoch, and partial progress printed out.  This is useful for</span>
+        <span class="sd">        tracking progress, but slows things down substantially.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">test_data</span><span class="p">:</span> <span class="n">n_test</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">training_data</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">training_data</span><span class="p">)</span>
+        <span class="n">mini_batches</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">training_data</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">k</span><span class="o">+</span><span class="n">mini_batch_size</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">mini_batch_size</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">mini_batch</span> <span class="ow">in</span> <span class="n">mini_batches</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_mini_batch</span><span class="p">(</span><span class="n">mini_batch</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">test_data</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s2">&quot;Epoch {0}: {1} / {2}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">j</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">test_data</span><span class="p">),</span> <span class="n">n_test</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s2">&quot;Epoch {0} complete&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+      </pre></div>
+    </p>
+    <p>Bộ <tt>training_data</tt> là một list của tuples <tt>(x, y)</tt> đại diện cho training inputs và outputs mong muốn tương ứng. Biến <tt>epochs</tt> và <tt>mini_batch_size</tt> là những cái mà bạn đang đoán - số epochs dùng để train, và size (kích thước) của mini-batches để dùng khi lấy mẫu training. <tt>eta</tt> là tốc độ học, $\eta$. Nếu đối số tùy chọn <tt>test_data</tt> được cung cấp, lúc đó chương trình sẽ đánh giá network sau mỗi epoch training, và in ra kết quả giữa tiến trình. Điều này khá có ích khi theo dõi tiến độ, nhưng sẽ làm chậm mọi thứ khá đáng kể.</p>
+    <p>Đoạn code hoạt động theo cách sau. Trong mỗi epoch, mọi thứ sẽ bắt đầu bằng cách xáo trộn training data, và rồi tách nó thành nhiều mini-batches theo kích thước phù hợp. Đây là một cách dễ đễ lấy mẫu training data một cách ngẫu nhiên. Sau đó cho mỗi <tt>mini_batch</tt> chúng ta áp dụng một bước gradient descent duy nhất. Nó sẽ được thực hiện bởi dòng code: <tt>self.update_mini_batch(mini_batch, eta)</tt>, nó sẽ cập nhật weights và biases của network theo một chu trình của gradient descent, chỉ sử dụng training data trong <tt>mini_batch</tt>.  Đây là đoạn code cho hàm <tt>update_mini_batch</tt>:
+      <div class="highlight"><pre><span></span>    <span class="k">def</span> <span class="nf">update_mini_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mini_batch</span><span class="p">,</span> <span class="n">eta</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update the network&#39;s weights and biases by applying</span>
+        <span class="sd">        gradient descent using backpropagation to a single mini batch.</span>
+        <span class="sd">        The &quot;mini_batch&quot; is a list of tuples &quot;(x, y)&quot;, and &quot;eta&quot;</span>
+        <span class="sd">        is the learning rate.&quot;&quot;&quot;</span>
+        <span class="n">nabla_b</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">biases</span><span class="p">]</span>
+        <span class="n">nabla_w</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">mini_batch</span><span class="p">:</span>
+        <span class="n">delta_nabla_b</span><span class="p">,</span> <span class="n">delta_nabla_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backprop</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">nabla_b</span> <span class="o">=</span> <span class="p">[</span><span class="n">nb</span><span class="o">+</span><span class="n">dnb</span> <span class="k">for</span> <span class="n">nb</span><span class="p">,</span> <span class="n">dnb</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">nabla_b</span><span class="p">,</span> <span class="n">delta_nabla_b</span><span class="p">)]</span>
+        <span class="n">nabla_w</span> <span class="o">=</span> <span class="p">[</span><span class="n">nw</span><span class="o">+</span><span class="n">dnw</span> <span class="k">for</span> <span class="n">nw</span><span class="p">,</span> <span class="n">dnw</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">nabla_w</span><span class="p">,</span> <span class="n">delta_nabla_w</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="o">-</span><span class="p">(</span><span class="n">eta</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">mini_batch</span><span class="p">))</span><span class="o">*</span><span class="n">nw</span> 
+        <span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">nw</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">,</span> <span class="n">nabla_w</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">biases</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span><span class="o">-</span><span class="p">(</span><span class="n">eta</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">mini_batch</span><span class="p">))</span><span class="o">*</span><span class="n">nb</span> 
+        <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="n">nb</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">biases</span><span class="p">,</span> <span class="n">nabla_b</span><span class="p">)]</span>
+      </pre></div>
+      
+      Hầu hết mọi việc được thực hiện ở dòng <div class="highlight"><pre><span></span>            <span class="n">delta_nabla_b</span><span class="p">,</span> <span class="n">delta_nabla_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backprop</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+      </pre></div>
+      
+      Hàm này gọi lên một thứ gọi là thuật toán <em>backpropagation</em>, là một cách tính gradient của hàm cost một cách nhanh chóng. Vậy <tt>update_mini_batch</tt> hoạt động đơn giản bằng cách tính những gradients đó cho mỗi ví dụ training ở trong <tt>mini_batch</tt>, và sau đó cập nhật <tt>self.weights</tt> và <tt>self.biases</tt> tương ứng.</p>
+      <p> Tôi sẽ không cho xem đoạn code cho <tt>self.backprop</tt> vào lúc này. Chúng ta sẽ học về cách backpropagation hoạt động ở chương sau,  bao gồm cả code cho <tt>self.backprop</tt>. Còn bây giờ, chỉ cần giả định là nó hoạt động giống như những gì nó hứa, trả ra những giá trị gradient cho cost của mỗi ví dụ training <tt>x</tt>.</p>
+      <p>Hãy nhìn vào toàn bộ chương trình, bao gồm cả những phần documentation mà tôi đã bỏ ra ở trên. Ngoài <tt>self.backprop</tt> thì chương trình chính nó tự giải thích hết rồi - hầu hết những việc nặng nhọc đều được làm bởi <tt>self.SGD</tt> và <tt>self.update_mini_batch</tt>, và chúng ta đều đã thảo luận về nó. Hàm <tt>self.backprop</tt> sử dụng thêm một vài hàm phụ để giúp tính gradient, đó là <tt>sigmoid_prime</tt>, dùng để tính đạo hàm của hàm $\sigma$, và <tt>self.cost_derivative</tt>, cái mà tôi sẽ không thảo luận ở đây. Bạn đã có thể nắm được ý chính (và có thể là cả chi tiết) của những hàm đó chỉ bằng cách đọc code và document đi kèm. Chúng ta sẽ sẽ nhìn kĩ từng chi tiết của chúng ở chương sau. Lưu ý rằng mặc dù chương trình nhìn có vẻ dài, hầu hết phần code là của những tài liệu được bình luận kèm theo với mục đích làm đoạn code dễ hiểu hơn. Thực tế, chương trình này chỉ có 74 dòng có chứa kí tự mà không phải là comment. Toàn bộ code có thể tải về trên GitHub <a href="https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/src/network.py">tại đây.</a>.
+      </p>
+      <p></p><p><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+        <span class="sd">network.py</span>
+        <span class="sd">~~~~~~~~~~</span>
+        
+        <span class="sd">A module to implement the stochastic gradient descent learning</span>
+        <span class="sd">algorithm for a feedforward neural network.  Gradients are calculated</span>
+        <span class="sd">using backpropagation.  Note that I have focused on making the code</span>
+        <span class="sd">simple, easily readable, and easily modifiable.  It is not optimized,</span>
+        <span class="sd">and omits many desirable features.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+        
+        <span class="c1">#### Libraries</span>
+        <span class="c1"># Standard library</span>
+        <span class="kn">import</span> <span class="nn">random</span>
+        
+        <span class="c1"># Third-party libraries</span>
+        <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+        
+        <span class="k">class</span> <span class="nc">Network</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sizes</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The list ``sizes`` contains the number of neurons in the</span>
+        <span class="sd">        respective layers of the network.  For example, if the list</span>
+        <span class="sd">        was [2, 3, 1] then it would be a three-layer network, with the</span>
+        <span class="sd">        first layer containing 2 neurons, the second layer 3 neurons,</span>
+        <span class="sd">        and the third layer 1 neuron.  The biases and weights for the</span>
+        <span class="sd">        network are initialized randomly, using a Gaussian</span>
+        <span class="sd">        distribution with mean 0, and variance 1.  Note that the first</span>
+        <span class="sd">        layer is assumed to be an input layer, and by convention we</span>
+        <span class="sd">        won&#39;t set any biases for those neurons, since biases are only</span>
+        <span class="sd">        ever used in computing the outputs from later layers.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sizes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sizes</span> <span class="o">=</span> <span class="n">sizes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">biases</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">sizes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">sizes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">sizes</span><span class="p">[</span><span class="mi">1</span><span class="p">:])]</span>
+        
+        <span class="k">def</span> <span class="nf">feedforward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the output of the network if ``a`` is input.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">biases</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">):</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span><span class="o">+</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">a</span>
+        
+        <span class="k">def</span> <span class="nf">SGD</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">training_data</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">mini_batch_size</span><span class="p">,</span> <span class="n">eta</span><span class="p">,</span>
+        <span class="n">test_data</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Train the neural network using mini-batch stochastic</span>
+        <span class="sd">        gradient descent.  The ``training_data`` is a list of tuples</span>
+        <span class="sd">        ``(x, y)`` representing the training inputs and the desired</span>
+        <span class="sd">        outputs.  The other non-optional parameters are</span>
+        <span class="sd">        self-explanatory.  If ``test_data`` is provided then the</span>
+        <span class="sd">        network will be evaluated against the test data after each</span>
+        <span class="sd">        epoch, and partial progress printed out.  This is useful for</span>
+        <span class="sd">        tracking progress, but slows things down substantially.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">test_data</span><span class="p">:</span> <span class="n">n_test</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">test_data</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">training_data</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">training_data</span><span class="p">)</span>
+        <span class="n">mini_batches</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">training_data</span><span class="p">[</span><span class="n">k</span><span class="p">:</span><span class="n">k</span><span class="o">+</span><span class="n">mini_batch_size</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">mini_batch_size</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">mini_batch</span> <span class="ow">in</span> <span class="n">mini_batches</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_mini_batch</span><span class="p">(</span><span class="n">mini_batch</span><span class="p">,</span> <span class="n">eta</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">test_data</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s2">&quot;Epoch {0}: {1} / {2}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">j</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">test_data</span><span class="p">),</span> <span class="n">n_test</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s2">&quot;Epoch {0} complete&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+        
+        <span class="k">def</span> <span class="nf">update_mini_batch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mini_batch</span><span class="p">,</span> <span class="n">eta</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update the network&#39;s weights and biases by applying</span>
+        <span class="sd">        gradient descent using backpropagation to a single mini batch.</span>
+        <span class="sd">        The ``mini_batch`` is a list of tuples ``(x, y)``, and ``eta``</span>
+        <span class="sd">        is the learning rate.&quot;&quot;&quot;</span>
+        <span class="n">nabla_b</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">biases</span><span class="p">]</span>
+        <span class="n">nabla_w</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">mini_batch</span><span class="p">:</span>
+        <span class="n">delta_nabla_b</span><span class="p">,</span> <span class="n">delta_nabla_w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">backprop</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="n">nabla_b</span> <span class="o">=</span> <span class="p">[</span><span class="n">nb</span><span class="o">+</span><span class="n">dnb</span> <span class="k">for</span> <span class="n">nb</span><span class="p">,</span> <span class="n">dnb</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">nabla_b</span><span class="p">,</span> <span class="n">delta_nabla_b</span><span class="p">)]</span>
+        <span class="n">nabla_w</span> <span class="o">=</span> <span class="p">[</span><span class="n">nw</span><span class="o">+</span><span class="n">dnw</span> <span class="k">for</span> <span class="n">nw</span><span class="p">,</span> <span class="n">dnw</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">nabla_w</span><span class="p">,</span> <span class="n">delta_nabla_w</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="n">w</span><span class="o">-</span><span class="p">(</span><span class="n">eta</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">mini_batch</span><span class="p">))</span><span class="o">*</span><span class="n">nw</span>
+        <span class="k">for</span> <span class="n">w</span><span class="p">,</span> <span class="n">nw</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">,</span> <span class="n">nabla_w</span><span class="p">)]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">biases</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span><span class="o">-</span><span class="p">(</span><span class="n">eta</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">mini_batch</span><span class="p">))</span><span class="o">*</span><span class="n">nb</span>
+        <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="n">nb</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">biases</span><span class="p">,</span> <span class="n">nabla_b</span><span class="p">)]</span>
+        
+        <span class="k">def</span> <span class="nf">backprop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return a tuple ``(nabla_b, nabla_w)`` representing the</span>
+        <span class="sd">        gradient for the cost function C_x.  ``nabla_b`` and</span>
+        <span class="sd">        ``nabla_w`` are layer-by-layer lists of numpy arrays, similar</span>
+        <span class="sd">        to ``self.biases`` and ``self.weights``.&quot;&quot;&quot;</span>
+        <span class="n">nabla_b</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">biases</span><span class="p">]</span>
+        <span class="n">nabla_w</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">]</span>
+        <span class="c1"># feedforward</span>
+        <span class="n">activation</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">activations</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="c1"># list to store all the activations, layer by layer</span>
+        <span class="n">zs</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># list to store all the z vectors, layer by layer</span>
+        <span class="k">for</span> <span class="n">b</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">biases</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">activation</span><span class="p">)</span><span class="o">+</span><span class="n">b</span>
+        <span class="n">zs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">activation</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">activations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">activation</span><span class="p">)</span>
+        <span class="c1"># backward pass</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cost_derivative</span><span class="p">(</span><span class="n">activations</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> \
+        <span class="n">sigmoid_prime</span><span class="p">(</span><span class="n">zs</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">nabla_b</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta</span>
+        <span class="n">nabla_w</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">activations</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span>
+        <span class="c1"># Note that the variable l in the loop below is used a little</span>
+        <span class="c1"># differently to the notation in Chapter 2 of the book.  Here,</span>
+        <span class="c1"># l = 1 means the last layer of neurons, l = 2 is the</span>
+        <span class="c1"># second-last layer, and so on.  It&#39;s a renumbering of the</span>
+        <span class="c1"># scheme in the book, used here to take advantage of the fact</span>
+        <span class="c1"># that Python can use negative indices in lists.</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_layers</span><span class="p">):</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">zs</span><span class="p">[</span><span class="o">-</span><span class="n">l</span><span class="p">]</span>
+        <span class="n">sp</span> <span class="o">=</span> <span class="n">sigmoid_prime</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">[</span><span class="o">-</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">(),</span> <span class="n">delta</span><span class="p">)</span> <span class="o">*</span> <span class="n">sp</span>
+        <span class="n">nabla_b</span><span class="p">[</span><span class="o">-</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">delta</span>
+        <span class="n">nabla_w</span><span class="p">[</span><span class="o">-</span><span class="n">l</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">activations</span><span class="p">[</span><span class="o">-</span><span class="n">l</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">transpose</span><span class="p">())</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">nabla_b</span><span class="p">,</span> <span class="n">nabla_w</span><span class="p">)</span>
+        
+        <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of test inputs for which the neural</span>
+        <span class="sd">        network outputs the correct result. Note that the neural</span>
+        <span class="sd">        network&#39;s output is assumed to be the index of whichever</span>
+        <span class="sd">        neuron in the final layer has the highest activation.&quot;&quot;&quot;</span>
+        <span class="n">test_results</span> <span class="o">=</span> <span class="p">[(</span><span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">feedforward</span><span class="p">(</span><span class="n">x</span><span class="p">)),</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="n">test_data</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="ow">in</span> <span class="n">test_results</span><span class="p">)</span>
+        
+        <span class="k">def</span> <span class="nf">cost_derivative</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">output_activations</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the vector of partial derivatives \partial C_x /</span>
+        <span class="sd">        \partial a for the output activations.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">output_activations</span><span class="o">-</span><span class="n">y</span><span class="p">)</span>
+        
+        <span class="c1">#### Miscellaneous functions</span>
+        <span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The sigmoid function.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mf">1.0</span><span class="o">/</span><span class="p">(</span><span class="mf">1.0</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+        
+        <span class="k">def</span> <span class="nf">sigmoid_prime</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Derivative of the sigmoid function.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">))</span></pre></div>
+      </p>
+      <p>Chương trình này nhận diện chữ viết tay tốt tới mức nào? Hãy bắt đầu bằng việc load MNIST data vào chương trình nào. Tôi sẽ làm việc này bằng cách sử dụng một chương trình bổ trợ nho nhỏ, <tt>mnist_loader.py</tt>, sẽ được giải thích phía dưới. Chúng ta chạy những lệnh sau trong Python shell: </p>
+      <p>
+        <div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">mnist_loader</span>
+          <span class="o">&gt;&gt;&gt;</span> <span class="n">training_data</span><span class="p">,</span> <span class="n">validation_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> \
+          <span class="o">...</span> <span class="n">mnist_loader</span><span class="o">.</span><span class="n">load_data_wrapper</span><span class="p">()</span></pre>
+        </div>
+      </p>
+      <p> Đương nhiên, những câu lệnh này cũng có thể được thực hiện trong một chương trình Python riêng biệt, nhưng nếu bạn đang theo tôi từ nãy đến giờ thì chắc chắn là dễ nhất nếu bạn thực hiện nó trong một Python shell.</p>
+      <p>Sau khi load xong MNIST dât, chúng ta sẽ thiết lập một <tt>Network</tt> với $30$ neurons ẩn. Chúng ta sẽ thực hiện nó sau khi import chương trình Python được ghi ở trên, tên là <tt>network</tt>,</p>
+      <p>
+        <div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">network</span>
+          <span class="o">&gt;&gt;&gt;</span> <span class="n">net</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">Network</span><span class="p">([</span><span class="mi">784</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span></pre>
+        </div>
+      </p>
+      <p>Cuối cùng chúng ta sẽ dùng stochastic gradient descent để học từ MNIST <tt>training_data</tt> khoảng hơn 30 epochs, với mini-batch bằng 10, và tốc độ học (learning rate) $\eta = 3.0$, </p>
+      <p><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">net</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">training_data</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="n">test_data</span><span class="o">=</span><span class="n">test_data</span><span class="p">)</span>
+      </pre></div>
+    </p>
+    <p>Lưu ý rằng nếu bạn đang chạy code cùng lúc khi bạn đang đọc, sẽ tốn một khoảng thời gian để code thực thi - với một chiếc máy điển hình (vào năm 2015) nó sẽ tốn khoảng vài phút để chạy. Tôi khuyên bạn nên thiết lập mọi thứ cho nó chạy, tiếp tục đọc và thỉnh thoảng kiểm tra output từ đoạn code. Nếu đang vội bạn có thể tăng tốc lên một xíu  bằng cách giảm số epochs xuống, bằng cách giảm số neurons ẩn xuống hoặc bằng cách chỉ sử dụng một phần training data. Lưu ý rằng code trong sản phẩm thực sự sẽ nhanh hơn rất nhiều: những đoạn script python ở đây chỉ nhằm giúp bạn hiểu về cách hoạt động của neural network, chứ không phải là code với hiệu năng cao! Và đương nhiên, một khi chúng ta đã train một network, ta có thể chạy nó một cách nhanh chóng, trên hầu hết tất cả các nền tảng khác nhau. Ví dụ, một khi chúng ta đã học được một set weights and biases tốt cho một network, nó có thể dễ dàng được port (chuyển đổi) sang Javascript để chạy ngay trên trình duyệt, hoặc là một app native ngay trên thiết bị di động. Trong trường hợp nào đi nữa, đây là một phần bản sao lại của output cho một lần training của neural network. Bản sao lại này cho thấy số lượng hình ảnh test được nhận diện chính xác bở neural network sau mỗi training epoch. Như bạn thấy, chỉ sau một epoch duy nhất con số này đã đạt tới 9,129 trên 10,000, và nó cứ tiếp tục tăng lên</p>
+    <p><div class="highlight"><pre><span></span>Epoch 0: 9129 / 10000
+      Epoch 1: 9295 / 10000
+      Epoch 2: 9348 / 10000
+      ...
+      Epoch 27: 9528 / 10000
+      Epoch 28: 9542 / 10000
+      Epoch 29: 9534 / 10000
+    </pre></div></p>
+    <p>Tức là, neural network sau khi train cho chúng ta tỉ số phân loại vào khoảng $95$ phần trăm - $95.42$ phần trăm tại đỉnh cao nhất ("Epoch 28")! Khá là phấn khích ở lần thử đầu tiên. Tôi vẫn nên cảnh báo bạn rằng, nếu bạn chạy code thì có thể kết quả của bạn có thể sẽ khác kết quả của tôi, bì chúng ta khởi tạo network của mình bằng những weights và biases ngẫu nhiên (khác nhau). Để tạo ra kết quả ở trong chương này, tôi đã lấy kết quả tốt nhất trong ba lần chạy thử.</p>
+    <p>Hãy chạy thử lại thí nghiệm trên, thay đổi số neurons ẩn thành $100$. Giống với trường hợp trước, nếu bạn chạy code trong lúc đọc, bạn nên biết là sẽ tốn một khoảng thời gian để thực thi đấy (trên máy tôi thì thử nghiệm này tốn khoảng 10 giây cho mỗi epoch), nên sẽ thông minh hơn nếu bạn cho nó và tiếp tục đọc song song trong lúc đó.</p>
+    <p><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">net</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">Network</span><span class="p">([</span><span class="mi">784</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+      <span class="o">&gt;&gt;&gt;</span> <span class="n">net</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">training_data</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">,</span> <span class="n">test_data</span><span class="o">=</span><span class="n">test_data</span><span class="p">)</span>
+    </pre></div>
+  </p>
+  <p>Chắc rồi, điều này cải thiện kết quả lên $96.59$ phần trăm. Ít ra là trong trường hợp này, sử dụng nhiều neurons ẩn hơn giúp chúng ta có kết quả tốt hơn <span class="marginnote"> *Phản hồi từ người đọc cho thấy sự đa dạng ở kết quả thử nghiệm, và có nhiều lần training cho ra kết quả tệ hơn kha khá. Sử dụng những kĩ thuật được giới thiệu ở chương 3 sẽ giảm đáng kể sự biến động về hiệu năng giữa những lần chạy training khác nhau.</span>.</p>
+  <p>Đương nhiên, để đạt được độ chính xác đó, tôi phải đưa ra những sự lựa chọn cụ thể về số lượng epoch training, kích thước của mini-batch, và tốc độ học $\eta$. Như tôi có nói ở trên, chúng được biết đến dưới tên gọi hyper-parameters (siêu tham số) của neural network, để phân biệt ra với parameters (weights và biases) được học từ thuật toán học hỏi. Nếu chúng ta chọn những hyper-parameters tồi, chúng ta sẽ có những kết quả xấu. Giả sử, chúng ta chọn learning rate là $\eta = 0.001$,</p>
+  <p><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">net</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">Network</span><span class="p">([</span><span class="mi">784</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+    <span class="o">&gt;&gt;&gt;</span> <span class="n">net</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">training_data</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="n">test_data</span><span class="o">=</span><span class="n">test_data</span><span class="p">)</span>
+  </pre></div></p>
+  <p>Kết quả cho ra đáng thất vọng hơn nhiều,
+    <div class="highlight"><pre><span></span>Epoch 0: 1139 / 10000
+      Epoch 1: 1136 / 10000
+      Epoch 2: 1135 / 10000
+      ...
+      Epoch 27: 2101 / 10000
+      Epoch 28: 2123 / 10000
+      Epoch 29: 2142 / 10000
+    </pre></div>
+    
+    Tuy nhiên bạn có thể thấy hiệu năng của network đang dần tốt lên theo thời gian. Điều này gợi ý rằng tăng learning rate lên, cho như $\eta = 0.01$. Nếu ta làm thế, ta sẽ đạt kết quả tốt hơn, và điều làm ta muốn tăng learning rate lên nữa. (Nếu thay đổi nào mà làm mọi thứ tốt lên, làm nhiều hơn nữa!) Nếu chúng ta làm nó nhiều lần, chúng ta sẽ có $\eta = 1.0$ ( và có thể tinh chỉnh lên $3.0$), khá gần với thử nghiệm trước của chúng ta. Vậy nên mặc dù ban đầu ta có một lựa chọn hyper-parameters tồi, ít ra ta có đủ thông tin để giúp ta trong việc cải thiện hyper-parameters của mình.
+  </p>
+  <p>Về tổng thể, debug (sửa lỗi) một neural network có thể khá thách thức. Điều này đặc biệt đúng khi lựa chọn hyper-parameters ban đầu cho ra kết quả không tốt hơn so với tín hiệu nhiễu ngẫu nhiên (random noise - đoán mò). Giả sử chúng ta thử mạng 30 neurons ẩn thành công lúc trước, nhưng với learning rate đổi thành $\eta = 100.0$:
+    <div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="n">net</span> <span class="o">=</span> <span class="n">network</span><span class="o">.</span><span class="n">Network</span><span class="p">([</span><span class="mi">784</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">])</span>
+      <span class="o">&gt;&gt;&gt;</span> <span class="n">net</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">training_data</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mf">100.0</span><span class="p">,</span> <span class="n">test_data</span><span class="o">=</span><span class="n">test_data</span><span class="p">)</span>
+    </pre></div>
+    
+    Tại lúc này thực sự ta đã đi quá xa, và learning rate lúc này là quá cao:
+    <div class="highlight"><pre><span></span><span class="n">Epoch</span> <span class="mi">0</span><span class="p">:</span> <span class="mi">1009</span> <span class="o">/</span> <span class="mi">10000</span>
+      <span class="n">Epoch</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">1009</span> <span class="o">/</span> <span class="mi">10000</span>
+      <span class="n">Epoch</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">1009</span> <span class="o">/</span> <span class="mi">10000</span>
+      <span class="n">Epoch</span> <span class="mi">3</span><span class="p">:</span> <span class="mi">1009</span> <span class="o">/</span> <span class="mi">10000</span>
+      <span class="o">...</span>
+      <span class="n">Epoch</span> <span class="mi">27</span><span class="p">:</span> <span class="mi">982</span> <span class="o">/</span> <span class="mi">10000</span>
+      <span class="n">Epoch</span> <span class="mi">28</span><span class="p">:</span> <span class="mi">982</span> <span class="o">/</span> <span class="mi">10000</span>
+      <span class="n">Epoch</span> <span class="mi">29</span><span class="p">:</span> <span class="mi">982</span> <span class="o">/</span> <span class="mi">10000</span>
+    </pre></div>
+    
+    Bây giờ tưởng tượng chúng ta gặp phải vấn đề này lần đầu tiên. Đương nhiên ta <em>biết</em> từ thử nghiệm lúc trước rằng điều đúng đắn là phải giảm learning rate. Nhưng nếu ta mới gặp phải vấn đề này lần đầu thì sẽ chẳng có gì nhiều trong output để giúp ta biết được cần phải làm gì. Chúng ta có thể lo lắng không chỉ về learning rate, mà còn về mọi khía cạnh khác của nerual network. Chúng ta có thể tự hỏi rằng có phải ta đã khởi tạo weights và biases theo cách nào đó làm cho network khó học hơn? Hoặc có lẽ chúng ta không có đủ training data để có thể học được những thứ có nghĩa? Có thể chúng ta đã không chạy chưa đủ số epochs? Cũng có thể là một neural network với kiến trúc như thế này không thể nào học được cách nhận dạng chữ viết tay? Có thể là learning rate quá <em>thấp</em> không? Hoặc, có thể, learning rate quá cao? Khi bạn gặp một vấn đề lần đầu tiên, bạn không thể biết chắc.</p>
+    <p>Bài học rút ra được là debugging một neural network không phải dễ, và, cũng giống như lập trình thông thường, đó là cả một nghệ thuật. Bạn sẽ cần phải học được cái nghệ thuật ấy để có thể gặt hái những kết quả tốt từ neural network.Tổng quát hơn, chúng ta phải phát triển những kinh nghiệm để chọn ra những hyper-parameters và kiến trúc tốt. Chúng ta sẽ thảo luận những điều này kĩ càng xuyên suốt quyển sách, bao gồm cả cách tôi chọn những hyper-parameters trên.</p>
+    <p><h4><a name="exercise_420023"></a><a href="#exercise_420023">Exercise</a></h4>
+      <ul><li> Try creating a network with just two layers - an input and an
+        output layer, no hidden layer - with 784 and 10 neurons,
+        respectively.  Train the network using stochastic gradient descent.
+        What classification accuracy can you achieve?</li>
+      </ul>
+    </p>
+    <p></p>
+    <p>Ở trước, tôi đã bỏ qua về chi tiết về cách load MNIST data. Nó khá là trực quan. Để hoàn thiện, đây là đoạn code. Cấu trúc dữ liệu dùng để lưu MNIST data đươc miêu tả ở trong phần tài liệu comment - những thứ trực quan, tuples và list của Numpy, <tt>ndarray</tt> objects (nghĩ chúng giống như là vector nếu bạn không quen với <tt>ndarray</tt>s):</p>
+    <p><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;</span>
+      <span class="sd">mnist_loader</span>
+      <span class="sd">~~~~~~~~~~~~</span>
+      
+      <span class="sd">A library to load the MNIST image data.  For details of the data</span>
+      <span class="sd">structures that are returned, see the doc strings for ``load_data``</span>
+      <span class="sd">and ``load_data_wrapper``.  In practice, ``load_data_wrapper`` is the</span>
+      <span class="sd">function usually called by our neural network code.</span>
+      <span class="sd">&quot;&quot;&quot;</span>
+      
+      <span class="c1">#### Libraries</span>
+      <span class="c1"># Standard library</span>
+      <span class="kn">import</span> <span class="nn">cPickle</span>
+      <span class="kn">import</span> <span class="nn">gzip</span>
+      
+      <span class="c1"># Third-party libraries</span>
+      <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+      
+      <span class="k">def</span> <span class="nf">load_data</span><span class="p">():</span>
+      <span class="sd">&quot;&quot;&quot;Return the MNIST data as a tuple containing the training data,</span>
+      <span class="sd">    the validation data, and the test data.</span>
+      
+      <span class="sd">    The ``training_data`` is returned as a tuple with two entries.</span>
+      <span class="sd">    The first entry contains the actual training images.  This is a</span>
+      <span class="sd">    numpy ndarray with 50,000 entries.  Each entry is, in turn, a</span>
+      <span class="sd">    numpy ndarray with 784 values, representing the 28 * 28 = 784</span>
+      <span class="sd">    pixels in a single MNIST image.</span>
+      
+      <span class="sd">    The second entry in the ``training_data`` tuple is a numpy ndarray</span>
+      <span class="sd">    containing 50,000 entries.  Those entries are just the digit</span>
+      <span class="sd">    values (0...9) for the corresponding images contained in the first</span>
+      <span class="sd">    entry of the tuple.</span>
+      
+      <span class="sd">    The ``validation_data`` and ``test_data`` are similar, except</span>
+      <span class="sd">    each contains only 10,000 images.</span>
+      
+      <span class="sd">    This is a nice data format, but for use in neural networks it&#39;s</span>
+      <span class="sd">    helpful to modify the format of the ``training_data`` a little.</span>
+      <span class="sd">    That&#39;s done in the wrapper function ``load_data_wrapper()``, see</span>
+      <span class="sd">    below.</span>
+      <span class="sd">    &quot;&quot;&quot;</span>
+      <span class="n">f</span> <span class="o">=</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;../data/mnist.pkl.gz&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+      <span class="n">training_data</span><span class="p">,</span> <span class="n">validation_data</span><span class="p">,</span> <span class="n">test_data</span> <span class="o">=</span> <span class="n">cPickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+      <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+      <span class="k">return</span> <span class="p">(</span><span class="n">training_data</span><span class="p">,</span> <span class="n">validation_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
+      
+      <span class="k">def</span> <span class="nf">load_data_wrapper</span><span class="p">():</span>
+      <span class="sd">&quot;&quot;&quot;Return a tuple containing ``(training_data, validation_data,</span>
+      <span class="sd">    test_data)``. Based on ``load_data``, but the format is more</span>
+      <span class="sd">    convenient for use in our implementation of neural networks.</span>
+      
+      <span class="sd">    In particular, ``training_data`` is a list containing 50,000</span>
+      <span class="sd">    2-tuples ``(x, y)``.  ``x`` is a 784-dimensional numpy.ndarray</span>
+      <span class="sd">    containing the input image.  ``y`` is a 10-dimensional</span>
+      <span class="sd">    numpy.ndarray representing the unit vector corresponding to the</span>
+      <span class="sd">    correct digit for ``x``.</span>
+      
+      <span class="sd">    ``validation_data`` and ``test_data`` are lists containing 10,000</span>
+      <span class="sd">    2-tuples ``(x, y)``.  In each case, ``x`` is a 784-dimensional</span>
+      <span class="sd">    numpy.ndarry containing the input image, and ``y`` is the</span>
+      <span class="sd">    corresponding classification, i.e., the digit values (integers)</span>
+      <span class="sd">    corresponding to ``x``.</span>
+      
+      <span class="sd">    Obviously, this means we&#39;re using slightly different formats for</span>
+      <span class="sd">    the training data and the validation / test data.  These formats</span>
+      <span class="sd">    turn out to be the most convenient for use in our neural network</span>
+      <span class="sd">    code.&quot;&quot;&quot;</span>
+      <span class="n">tr_d</span><span class="p">,</span> <span class="n">va_d</span><span class="p">,</span> <span class="n">te_d</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">()</span>
+      <span class="n">training_inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="mi">784</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">tr_d</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+      <span class="n">training_results</span> <span class="o">=</span> <span class="p">[</span><span class="n">vectorized_result</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">tr_d</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+      <span class="n">training_data</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">training_inputs</span><span class="p">,</span> <span class="n">training_results</span><span class="p">)</span>
+      <span class="n">validation_inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="mi">784</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">va_d</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+      <span class="n">validation_data</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">validation_inputs</span><span class="p">,</span> <span class="n">va_d</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+      <span class="n">test_inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="mi">784</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">te_d</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+      <span class="n">test_data</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="n">test_inputs</span><span class="p">,</span> <span class="n">te_d</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+      <span class="k">return</span> <span class="p">(</span><span class="n">training_data</span><span class="p">,</span> <span class="n">validation_data</span><span class="p">,</span> <span class="n">test_data</span><span class="p">)</span>
+      
+      <span class="k">def</span> <span class="nf">vectorized_result</span><span class="p">(</span><span class="n">j</span><span class="p">):</span>
+      <span class="sd">&quot;&quot;&quot;Return a 10-dimensional unit vector with a 1.0 in the jth</span>
+      <span class="sd">    position and zeroes elsewhere.  This is used to convert a digit</span>
+      <span class="sd">    (0...9) into a corresponding desired output from the neural</span>
+      <span class="sd">    network.&quot;&quot;&quot;</span>
+      <span class="n">e</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+      <span class="n">e</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+      <span class="k">return</span> <span class="n">e</span>
+    </pre></div>
+  </p>
+  <p>Tôi nói ở trên là chương trình của chúng ta cho ra kết quả khá tốt. Điều đó nghĩa là sao? Tốt so với cái gì? Sẽ bổ ích hơn nếu ta co một bài test cơ sở (không phải neural network) để so sánh với. Cơ sơ đơn giản nhất trong tất cả, đương nhiên, là đoán mò. Vậy thì sẽ đúng khoảng mười phần trăm. Chúng ta đang làm tốt hơn như thế nhiều!</p>
+  <p>Vậy còn một cái cơ sở không tầm thường lắm thì sao? Hãy thử một ý tưởng cực kì đơn giản: chúng ta sẽ nhìn xem một bức ảnh <em>tối</em> như thế nào. Cho ví dụ, một bức ảnh của số $2$ thường sẽ tối hơn một bức ảnh của số $1$, chỉ bởi vì nhiều pixel bị tô đen hơn, giống như ví dụ sau đây mô tả:</p>
+  <p><center><img src="images/mnist_2_and_1.png" width="256px"></center></p>
+  <p>Điều này gợi ý ta sử dụng training data để tính mức độ tối trung bình của mỗi chữ số, $0, 1, 2,\ldots, 9$. Khi được cho xem một bức hình mới, chúng ta tính xem tấm hình đó tối đến mức nào, và đoán nó là cái kí tự nào mà có độ tối gần với nó nhất. Đây là một chu trình đơn giản, và khá dễ để code, nên tôi sẽ không viết đoạn code ra tường tận, nếu bạn có hứng thú thì nó ở <a href="https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/src/mnist_average_darkness.py">GitHub repository này</a>. Nhưng nó là một sự cải thiện lớn so với đoán ngẫu nhiên, đúng được $2,225$ trong số $10,000$ hình ảnh test, i.e., $22.25$ phần trăm chính xác.</p>
+  <p><a name="SVM"></a></p>
+  <p>Không khó để tìm một ý tưởng khác mà cũng đạt được độ chính xác trong khoảng $20$ tới $50$ phần trăm. Nếu bạn chịu khó hơn thì bạn có thể lên tới khoảng hơn $50$ phần trăm. Nhưng để đạt được độ chính xác cao hơn nhiều thì sẽ tốt hơn nếu bạn sử dụng một phương pháp Học máy (Machine Learning) đã được thiết lập. Hãy thử sử dụng một trong những thuật toán nổi tiếng nhất, <em>support vector machine</em> hay còn gọi là <em>SVM</em>. Nếu bạn không biết về SVMs, đừng lo, chúng ta sẽ không cần phải hiểu về chi tiết hoạt động của SVMs. Thay vào đó chúng ta sẽ sử dụng một thư viện Python là <a href="http://scikit-learn.org/stable/">scikit-learn</a>, cung cấp cho ta một giao diện Python đơn giản tới một thư viện tốc độ cao viết trên C cho SVM, được biết đến dưới tên <a href="http://www.csie.ntu.edu.tw/&#126;cjlin/libsvm/">LIBSVM</a>.</p>
+  <p>Nếu chúng ta chạy classifier (bộ phân loại) SVM của scikit-learn với cấu hình mặc định, thì nó sẽ đạt độ chính xác 9,435 trên 10,000 hình ảnh test. (Code xem tại <a href="https://github.com/mnielsen/neural-networks-and-deep-learning/blob/master/src/mnist_svm.py">đây</a>.) Đó là một sự cải thiện lớn so với hướng tiếp cận đơn giản là phân loại tấm hình dựa trên độ tối của nó. Thực ra, điều đó tương đương với việc hiệu năng của SVM ngang ngửa với neural network của chúng ta, chỉ tệ hơn một xíu thôi. Trong những chương sau chúng ta sẽ giới thiệu những kĩ thuật mới mà cho phép chúng ta cải thiện neural network để nó thực hiện tốt hơn SVM nhiều.</p>
+  <p>Tuy nhiên, Đó chưa phải là phần kết của câu chuyện. Kết quả 9,435 trong số 10,000 là kết quả trong cấu hình scikit-learn mặc định cho SVM. SVM có một vài parameters (tham số) có thể tinh chỉnh được, và hoàn toàn có thể tìm ra những parameters khác cải thiện hiệu suất khui-hộp (out-of-the-box) của SVM. Tôi sẽ không tìm kiếm tường tận những parameters này, thay vào đó sẽ hướng bạn tới <a href="http://peekaboo-vision.blogspot.de/2010/09/mnist-for-ever.html">trang blog này</a> bởi <a href="http://peekaboo-vision.blogspot.ca/">Andreas Mueller</a> nếu bạn muốn biết thêm. Mueller chỉ ra rằng với một ít công sức tối ưu hóa parameters của SVM thì có thể nâng hiệu suất chính xác lên tới 98.5 phần trăm. Nói cách khác, một SVM được tinh chỉnh tốt chỉ mắc một lỗi trên 70 kí tự. Vậy khá là tốt. Neural network có làm tốt hơn được không? </p>
+  <p>Trên thực tế, nó có thể. Hiện tại, những neural networks thiết kế tốt có thể vượt mặt tất cả những phương pháp khác khi so về MNIST, kể cả SVMs. Kỉ lục hiện tại (2013) cho việc phân loại chính xác 9,979 trong số 10,000 hình ảnh. Kỉ lục được xác lập bởi <a href="http://www.cs.nyu.edu/&#126;wanli/">Li Wan</a>, <a href="http://www.matthewzeiler.com/">Matthew Zeiler</a>, Sixin Zhang, <a href="http://yann.lecun.com/">Yann LeCun</a>, và <a href="http://cs.nyu.edu/&#126;fergus/pmwiki/pmwiki.php">Rob Fergus</a>. Chúng ta sẽ thấy hầu hết những kĩ thuật mà họ sử dụng trong chương sau của quyển sách. Ở mức độ này, hiệu suất đã ngang ngửa với con người, và được cho là còn tốt hơn, vì một kha khá những hình ảnh MNIST còn khó cho con người nhận diện chắc chắn, ví dụ:</p>
+  <p><center><img src="images/mnist_really_bad_images.png" width="560px"></center></p>
+  <p>Tôi tin là bạn sẽ đồng ý rằng những hình đó khá "khoai" để phân loại! Với những hình ảnh như thế này trong MNIST, thật đáng chú ý khi neural network có thể phân loại chính xác tất cả ngoại trừ 21 trong số 10,000 hình ảnh test. Thông thường, khi lập trình chúng ta tin rằng giải quyết một vấn để phức tạp như nhận diện kí tự MNIST yêu cầu một thuật toán phức tạp. Nhưng ngay cả một trong bài nghiên cứu của Wan <em>và những người khác</em> được nhắc tới trên kia chứa những thuật toán khá đơn giản, gồm những biến thể nhỏ của thuật toán chúng ta đã xem trong chương này. Mọi thứ phức tạp đều được học, một cách tự động, từ training data. Theo cách nào đó, tinh thần của cả kết quả của chúng ta và kết quả trong những nghiên cứu chuyên sâu hơn là, với một vấn để nào đó: <center> thuật toán phức tạp $\leq$ thuật toán đơn giản + training data tốt.</center></p>
+  <p><h3><a name="toward_deep_learning"></a><a href="#toward_deep_learning">Về deep learning (học sâu)</a></h3></p>
+  <p>Trong khi neural network của ta cho ra hiệu năng ấn tượng, hiệu năng này về mặt nào đó hơi bí ẩn. Weights và biases trong mạng được tìm ra một cách tự động. Và thế nghĩa là chúng ta không lập tức có được một sự giải thích về cách network hoạt động. Liệu chúng ta có thể tìm ra cách nào đó để hiểu về những nguyên tắc mà network của chúng ta dựa trên để phân loại chữ số? Và, với những nguyên tắc đó, chúng ta có thể làm nó tốt hơn không?</p>
+  <p>Để nhấn mạnh thêm vào những câu hỏi đó, giả sử một vài thập kỉ tới, neural network sẽ dẫn tới trí tuệ nhân tạo (Artificial Intelligence AI). Liệu lúc đó chúng ta có hiểu được mạng lưới thông minh đó hoạt động như thế nào không? Network đó có thể sẽ không rõ ràng với ta, với weights và biases mà chúng ta không hiểu, bởi vì chúng được học ra một cách tự động. Trong những ngày đầu nghiên cứu về AI mọi người hi vọng rằng cái nỗ lực tạo ra một trí thông minh nhân tạo cũng sẽ giúp chúng ta hiểu thêm về những nguyên lý đằng sau trí thông minh, và cũng có thể, cách thức hoạt động của não bộ. Nhưng cũng có thể kết quả là chúng ta không hiểu về cách hoạt động của não bộ và cả của mạng neuron network!</p>
+  <p>Để tiếp cận những câu hỏi này, hãy suy nghĩ ngược về cách tôi diễn dịch neurons nhân tạo ở phần đầu chương, như là một cách để cân đo các dấu hiệu. Giả sử chúng ta muốn xác định một bức ảnh có chứa mặt người trong đó hay không:</p>
+  <p> </p>
+  <p>  
+    <span class="marginnote">Credits: 1. <a href="http://commons.wikimedia.org/wiki/User:ST">Ester Inbar</a>. 2.
+      Unknown. 3. NASA, ESA, G. Illingworth, D. Magee, and P. Oesch
+      (University of California, Santa Cruz), R. Bouwens (Leiden
+      University), and the HUDF09 Team.  Click vào hình để xem thêm chi tiết.
+    </span>
+  </p>
+  <p>  <a
+    href="http://commons.wikimedia.org/wiki/File:Kangaroo_ST_03.JPG"><img
+    src="images/Kangaroo.JPG" height="190px"/></a> <a
+    href="http://commons.wikimedia.org/wiki/File:Albert_Einstein_at_the_age_of_three_(1882).jpg"><img
+    src="images/Einstein_crop.jpg" height="190px"/></a> <a
+    href="http://commons.wikimedia.org/wiki/File:The_Hubble_eXtreme_Deep_Field.jpg"><img
+    src="images/hubble.jpg" height="190px"/></a> 
+  </p>
+  <p>Chúng ta có thể đánh phá vấn để này theo cách mà chúng ta giải quyết bài toán nhận diện chữ viết tay - bằng cách sử dụng pixel của tấm ảnh làm input cho neural network, với output từ network chỉ ra rằng "Đúng, có một khuôn mặt ở trong đó" hoặc "Không, không có mặt người ở trong đó".</p>
+  <p>Giả sử là ta làm theo cách này, nhưng chúng ta không sử dụng một thuật toán học tập. Thay vào đó, chúng ta sẽ thử thiết kế một network bằng tay, chọn ra những weights và biases phù hợp. Chúng ta sẽ chọn nó như thế nào đây? Hãy quên hoàn toàn neural network trong một lúc nhé, một phương pháp chúng ta sẽ làm đó phân tách vấn đề này ra thành nhiều vấn đề nhỏ: Bức ảnh này có chứa một con mắt ở góc trên bên trái không? Nó có một con mắt ở góc trên bên phải không? Nó có một cái mũi ở chính giữa không? Nó có một cái miệng ở phía dưới chính giữa không? Có tóc ở trên đầu không? Và cứ như thế.</p>
+  <p>Nếu câu trả lời cho một số câu hỏi ở trên là "có", hoặc thậm chí là "khá chắc là có", thì chúng ta kết luận rằng bức hình có khả năng chứa mặt người trong đó. Ngược lại, nếu câu trả lời cho hầu hết câu hỏi trên là "không" thì hình ảnh đó khá chắc là không chứa khuôn mặt nào.</p>
+  <p>Đương nhiên đây chỉ là một phương pháp thực nghiệm thô, và nó còn nhiều điều sai sót. Có thể người đó bị hói, nên họ không có tóc. Có thể do chúng ta chỉ nhìn thấy được một phần khuôn mặt họ, hoặc khuôn mặt đang ở một góc nhìn nào đó làm cho một phần mặt họ bị che khuất. Dù sao, phuong pháp thực nghiệm trên gợi ý rằng nếu chúng ta có thể giải quyết những bài toán nhỏ bằng neural network, thì chúng ta có thể xây được một mạng lưới neuron để nhận diện khuôn mặt bằng cách kết hợp những network cho những vấn đề nhỏ lại với nhau. Lưu ý rằng tôi nói điều này ra không phải với ý nghĩ đây là một cách tiếp cận thực tế cho bài toán nhận diện khuôn mặt: mà trái lại, nó giúp chúng ta xây xây dựng trực giác về cách hoạt động của network. Đây là kiến trúc:</p>
+  <p><center>
+    <img src="images/tikz14.png"/>
+  </center></p>
+  <p>Những vấn đề nhỏ đó cũng có thể được tách ra thêm nữa. Giả sử chúng ta đang suy nghĩ về câu hỏi: "Trên góc trên bên trái có một con mắt không?" Ta có thể tách nó ra thành những câu hỏi như: "Có lông mày không?"; "Có đường kẻ mắt không?"; "Có đồng tử không?" và cứ như thế. Đương nhiên, những câu hỏi này nên kèm theo cả những thông tin về vị trí, - "Liệu có lông mày ở góc trên bên trái, và ở bên trên đồng tử?", và những thứ như thế - nhưng cứ giữ nó đơn giản đi đã. Network cho câu hỏi "Có một con mắt ở góc trên bên trái không?" có thể được phân tách ra như sau:</p>
+  <p><center>
+    <img src="images/tikz15.png"/>
+  </center>
+</p>
+<p>Những cây hỏi trên cũng có thể được tách ra, phân tích ra nữa ra nữa qua nhiều lớp. Cuối cùng, chúng ta sẽ làm việc với những sub-network (network nhỏ) đơn giản đến mức chúng có thể dễ dàng trả lời ở mức độ pixel đơn giản nhất. Những câu hỏi đó, ví dụ, là về sự hiện diện hoặc vắng mặt của những hinh dạng đơn giản nhất tại một điểm cụ thể trong bức hình. Những câu hỏi đó có thể được trả lời bằng một neuron duy nhất kết nối tới pixel thô trong bức hình.</p>
+<p>Kết quả cuối cùng là một network mà phân tách một vấn đề hết sức phức tạp - bức hình này có chứa một khuôn mặt không - thành những câu hỏi đơn giản mà có thể trả lời được ở mức độ một pixel riêng lẻ. Nó làm được điều đó thông qua một chuỗi các lớp, với những layers đầu trả lời những câu hỏi đơn giản và cụ thể về hình ảnh input, và những layers sau xây nên một hệ thống lớp lang phức tạp và trừu tượng. Networks với kiểu cấu trúc nhiều lớp này - với hai hoặc nhiều lớp hơn - được gọi là <em>deep neural networks</em>.</p>
+<p></p><p></p>
+<p>Đương nhiên tôi vẫn chưa nói cách phân tách nó ra thành những sub-networks. Chắc chắn rằng không khả thi khi tự thiết kế những weights và biases trong network. Thay vào đó, chúng ta muốn sử dụng những thuật toán học tập để network có thể tự động học ra weights và biases - và do đó, cấu trúc thứ bậc - từ training data. Các nhà nghiên cứu trong thập niên 1980s và 1990s đã thử sử dụng stochastic gradient descent và backpropagation để train các deep networks. Thật không may, trừ một vài kiến trúc đặc biệt, họ không gặp nhiều may mắn cho lắm. Network sẽ học, nhưng khá chậm, và trong thực tế khá là chậm để có thể trở nên hữu dụng.</p>
+<p>Từ 2006, một nhóm kĩ thuật giúp cho deep neural nets học đã được phát triển. Những kĩ thuật deep learning này dựa trên stochastic gradient descent và backpropagation, nhưng cũng có những ý tưởng mới được giới thiệu thêm. Những kĩ thuật này đã cho phép train những network sâu hơn (và lớn hơn) - ngày nay mọi người thường xuyên train những networks với 5 tới 10 hidden layers. Và, hóa ra là những networks sâu này có hiệu suất cao hơn nhiều so với network shallow (nông) (những network chỉ có một layer ẩn) ở một vài vấn đề. Lí do, đương nhiên, là khả năng xây nên những khái niệm lớp lang thứ bậc phức tạp của deep network. Nó cũng hơi giống cách những ngôn ngữ lập trình truyền thống sử dụng thiết kế mô đun và ý tưởng về lớp trừu tượng để cho phép tạo ra những chương trình máy tính phức tạp. So sánh một deep network với shallow network cũng giống như so sánh một ngôn ngữ lập trình với khả năng tạo các functions và ngôn ngữ lập trình mà không có khả năng gọi ra các function khác. Sự trừu tượng trong neural network có một cái hình thức khác so với lập trình truyền thống, nhưng cũng quan trọng tương đương vậy.</p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p>
+<p>
+</div>
+<div class="footer"> <span class="left_footer"> In academic work,
+  please cite this book as: Michael A. Nielsen, "Neural Networks and
+  Deep Learning", Determination Press, 2015
+  
+  <br/>
+  <br/>
+  
+  This work is licensed under a <a rel="license"
+  href="http://creativecommons.org/licenses/by-nc/3.0/deed.en_GB"
+  style="color: #eee;">Creative Commons Attribution-NonCommercial 3.0
+  Unported License</a>.  This means you're free to copy, share, and
+  build on this book, but not to sell it.  If you're interested in
+  commercial use, please <a
+  href="mailto:mn@michaelnielsen.org">contact me</a>.
+</span>
+<span class="right_footer">
+  Last update: Fri Aug  4 10:27:31 2017
+  <br/>
+  <br/>
+  <br/>
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/deed.en_GB"><img alt="Creative Commons Licence" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a>
+</span>
+</div>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  
+  ga('create', 'UA-44208967-1', 'neuralnetworksanddeeplearning.com');
+  ga('send', 'pageview');
+  
+</script>
+</body>
+</html>
